@@ -38,7 +38,8 @@ robot_state = {
     "head_scan_frequency": 0.5,
     "walking_active": False,
     "last_command_time": 0,
-    "current_motion": None
+    "current_motion": None,
+    "last_image_timestamp": 0
 }
 motions = {}
 
@@ -212,6 +213,14 @@ def process_commands():
                 start_motion(motion_name)
             else:
                 print("❌ Команда 'play_motion' не содержит 'motion_name'")
+        elif action == "get_camera_image":
+            if camera_found and camera:
+                image_path = DATA_DIR / "camera_image.jpg"
+                camera.saveImage(str(image_path), 100)
+                robot_state['last_image_timestamp'] = time.time()
+                print(f"✅ Изображение сохранено в {image_path}")
+            else:
+                print("❌ Камера не найдена, невозможно получить изображение")
 
     except Exception as e:
         print(f"❌ Ошибка обработки команды: {e}")
@@ -247,7 +256,8 @@ def update_status():
         "head_position": head_position,
         "arm_positions": arm_positions,
         "walking_active": robot_state['walking_active'],
-        "head_scan_active": robot_state['head_scan_active']
+        "head_scan_active": robot_state['head_scan_active'],
+        "last_image_timestamp": robot_state.get('last_image_timestamp', 0)
     }
 
     # Записываем статус в файл

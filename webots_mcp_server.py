@@ -6,6 +6,7 @@ MCP Server для управления роботом NAO в Webots.
 """
 
 import asyncio
+import base64
 import json
 import os
 import socket
@@ -39,7 +40,8 @@ robot_status = {
         "right_shoulder_roll": 0.0
     },
     "last_recognized_objects": [],
-    "last_update": 0
+    "last_update": 0,
+    "last_image_timestamp": 0
 }
 
 def load_status():
@@ -78,6 +80,44 @@ def wait_for_status_update(timeout=5.0):
         time.sleep(0.1)
     return False
 
+def wait_for_image_update(timeout=10.0):
+    """Ожидает обновления изображения от контроллера."""
+    start_time = time.time()
+    initial_image_time = robot_status.get('last_image_timestamp', 0)
+
+    while time.time() - start_time < timeout:
+        load_status()
+        if robot_status.get('last_image_timestamp', 0) > initial_image_time:
+            return True
+        time.sleep(0.1)
+    return False
+
+
+@mcp.tool()
+def get_camera_image() -> str:
+    """Получает изображение с камеры робота в формате Base64."""
+    command = {
+        "action": "get_camera_image"
+    }
+
+    if not save_command(command):
+        return "❌ Ошибка отправки команды"
+
+    if not wait_for_image_update():
+        return "⚠️ Команда отправлена, но новое изображение не получено"
+
+    image_path = DATA_DIR / "camera_image.jpg"
+    if not image_path.exists():
+        return "❌ Файл изображения не найден после обновления"
+
+    try:
+        with open(image_path, "rb") as f:
+            image_data = f.read()
+        base64_image = base64.b64encode(image_data).decode('utf-8')
+        return f"✅ Изображение получено (формат Base64):\n{base64_image}"
+    except Exception as e:
+        return f"❌ Ошибка чтения или кодирования изображения: {e}"}
+
 @mcp.tool()
 def get_robot_status() -> str:
     """Получает текущий статус робота."""
@@ -94,7 +134,8 @@ def get_robot_status() -> str:
         "head_position": robot_status['head_position'],
         "arm_positions": robot_status['arm_positions'],
         "last_recognized_objects": robot_status['last_recognized_objects'],
-        "last_update": robot_status.get('last_update', 0)
+        "last_update": robot_status.get('last_update', 0),
+        "last_image_timestamp": robot_status.get('last_image_timestamp', 0)
     }
 
     return json.dumps(status_info, indent=2, ensure_ascii=False)

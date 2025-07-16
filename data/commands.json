@@ -1,7 +1,1 @@
-{
-  "action": "set_arm_position",
-  "arm": "left",
-  "shoulder_pitch": 1.0,
-  "shoulder_roll": 0.349,
-  "timestamp": 1752680272.8309364
-}
+{"action": "get_camera_image", "timestamp": 1721139700}
