@@ -95,7 +95,12 @@ def wait_for_image_update(timeout=10.0):
 
 @mcp.tool()
 def get_camera_image() -> str:
-    """Получает изображение с камеры робота в формате Base64."""
+    """
+    Получает путь к файлу изображения с камеры робота.
+
+    Returns:
+        str: Абсолютный путь к файлу изображения.
+    """
     command = {
         "action": "get_camera_image"
     }
@@ -110,13 +115,7 @@ def get_camera_image() -> str:
     if not image_path.exists():
         return "❌ Файл изображения не найден после обновления"
 
-    try:
-        with open(image_path, "rb") as f:
-            image_data = f.read()
-        base64_image = base64.b64encode(image_data).decode('utf-8')
-        return f"✅ Изображение получено (формат Base64):\n{base64_image}"
-    except Exception as e:
-        return f"❌ Ошибка чтения или кодирования изображения: {e}"
+    return f"✅ Изображение сохранено: {image_path.resolve()}"
 
 @mcp.tool()
 def get_robot_status() -> str:

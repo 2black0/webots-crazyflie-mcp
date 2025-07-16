@@ -222,8 +222,18 @@ def process_commands():
             else:
                 print("❌ Камера не найдена, невозможно получить изображение")
 
+    except json.JSONDecodeError:
+        # Ожидаемая ошибка, если файл пуст или некорректен
+        pass
     except Exception as e:
         print(f"❌ Ошибка обработки команды: {e}")
+    finally:
+        # Удаляем файл, чтобы избежать повторного выполнения
+        if COMMANDS_FILE.exists():
+            try:
+                os.remove(COMMANDS_FILE)
+            except OSError as e:
+                print(f"❌ Ошибка удаления файла команд: {e}")
 
 def update_status():
     """Обновляет статус для MCP сервера."""
