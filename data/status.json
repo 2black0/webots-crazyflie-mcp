@@ -1,0 +1,16 @@
+{
+  "timestamp": 1752673763.4213643,
+  "webots_connected": true,
+  "head_position": {
+    "yaw": 0.0,
+    "pitch": 0.0
+  },
+  "arm_positions": {
+    "left_shoulder_pitch": 1.745,
+    "right_shoulder_pitch": 1.745,
+    "left_shoulder_roll": 0.349,
+    "right_shoulder_roll": -0.349
+  },
+  "walking_active": false,
+  "head_scan_active": false
+}
