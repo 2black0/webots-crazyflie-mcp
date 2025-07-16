@@ -40,6 +40,7 @@ robot_state = {
     "last_command_time": 0,
     "current_motion": None
 }
+motions = {}
 
 # --- Инициализация моторов ---
 motors = {}
@@ -91,6 +92,15 @@ def set_initial_pose():
 
     print("✅ Исходная позиция установлена")
 
+def load_motions():
+    """Загружает все файлы анимации из папки motions."""
+    global motions
+    motions_dir = ROBOT_DIR / "motions"
+    for motion_file in motions_dir.glob("*.motion"):
+        name = motion_file.stem
+        motions[name] = Motion(str(motion_file))
+    print(f"✅ Загружено {len(motions)} анимаций.")
+
 def start_motion(motion_name):
     """Начинает воспроизведение файла анимации."""
     global robot_state
@@ -99,16 +109,13 @@ def start_motion(motion_name):
         robot_state['current_motion'].stop()
         print("⏹️ Предыдущая анимация остановлена")
 
-    # Конструкция пути к файлу анимации
-    motion_path = ROBOT_DIR / "motions" / f"{motion_name}.motion"
-
-    if not motion_path.exists():
-        print(f"❌ Файл анимации не найден: {motion_path}")
+    motion = motions.get(motion_name)
+    if not motion:
+        print(f"❌ Анимация '{motion_name}' не найдена в загруженных.")
         robot_state['current_motion'] = None
         return
 
     try:
-        motion = Motion(str(motion_path))
         duration = motion.getDuration()
         print(f"⏱️ Длительность анимации '{motion_name}': {duration:.2f} мс")
         motion.play()
@@ -121,13 +128,9 @@ def start_motion(motion_name):
 def update_motion():
     """Проверяет и обновляет статус текущей анимации."""
     global robot_state
-    if robot_state['current_motion']:
-        if robot_state['current_motion'].isOver():
-            print(f"✅ Анимация завершена")
-            robot_state['current_motion'] = None
-        else:
-            # Отладочная информация
-            print(f"⏳ Анимация продолжается...")
+    if robot_state['current_motion'] and robot_state['current_motion'].isOver():
+        print(f"✅ Анимация завершена")
+        robot_state['current_motion'] = None
 
 def process_commands():
     """Обрабатывает команды от MCP сервера."""
@@ -240,13 +243,13 @@ def update_status():
 # --- Основной цикл ---
 if __name__ == "__main__":
     set_initial_pose()
+    load_motions()
 
     print("🚀 Контроллер робота запущен. Ожидание команд...")
 
     # Основной цикл симуляции
     while robot.step(timestep) != -1:
         process_commands()
-        update_motion()
         update_status()
 
     print("🚪 Контроллер робота завершает работу.")
