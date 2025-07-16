@@ -116,7 +116,7 @@ def get_camera_image() -> str:
         base64_image = base64.b64encode(image_data).decode('utf-8')
         return f"✅ Изображение получено (формат Base64):\n{base64_image}"
     except Exception as e:
-        return f"❌ Ошибка чтения или кодирования изображения: {e}"}
+        return f"❌ Ошибка чтения или кодирования изображения: {e}"
 
 @mcp.tool()
 def get_robot_status() -> str:
