@@ -65,6 +65,23 @@ except Exception as e:
     motors_found = False
     print(f"❌ Ошибка инициализации моторов: {e}")
 
+
+# --- Инициализация камеры ---
+camera = None
+camera_found = True
+try:
+    camera = robot.getDevice("CameraTop")
+    if camera:
+        camera.enable(timestep)
+        print("✅ Камера найдена и включена")
+    else:
+        camera_found = False
+        print("❌ Камера 'CameraTop' не найдена")
+except Exception as e:
+    camera_found = False
+    print(f"❌ Ошибка инициализации камеры: {e}")
+
+
 # --- Функции управления ---
 def set_initial_pose():
     """Устанавливает исходную позицию робота."""
