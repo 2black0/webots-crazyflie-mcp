@@ -61,11 +61,14 @@ def save_command(command: dict):
     """Сохраняет команду в файл для контроллера."""
     try:
         command['timestamp'] = time.time()
+        # Убедимся, что директория существует
+        COMMANDS_FILE.parent.mkdir(parents=True, exist_ok=True)
         with open(COMMANDS_FILE, 'w', encoding='utf-8') as f:
             json.dump(command, f, indent=2, ensure_ascii=False)
+        print(f"[DEBUG] Команда успешно сохранена в {COMMANDS_FILE.resolve()}")
         return True
     except Exception as e:
-        print(f"Ошибка сохранения команды: {e}")
+        print(f"[ERROR] Ошибка сохранения команды в {COMMANDS_FILE.resolve()}: {e}")
         return False
 
 def wait_for_status_update(timeout=5.0):

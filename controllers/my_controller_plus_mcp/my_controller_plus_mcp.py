@@ -27,6 +27,14 @@ STATUS_FILE = DATA_DIR / "status.json"
 # Создаем директорию для данных
 DATA_DIR.mkdir(exist_ok=True)
 
+# Очищаем файл команд при запуске контроллера
+if COMMANDS_FILE.exists():
+    try:
+        os.remove(COMMANDS_FILE)
+        print("✅ Старый файл команд очищен при запуске.")
+    except OSError as e:
+        print(f"❌ Ошибка очистки файла команд при запуске: {e}")
+
 # --- Инициализация робота ---
 robot = Robot()
 timestep = int(robot.getBasicTimeStep())
@@ -227,13 +235,6 @@ def process_commands():
         pass
     except Exception as e:
         print(f"❌ Ошибка обработки команды: {e}")
-    finally:
-        # Удаляем файл, чтобы избежать повторного выполнения
-        if COMMANDS_FILE.exists():
-            try:
-                os.remove(COMMANDS_FILE)
-            except OSError as e:
-                print(f"❌ Ошибка удаления файла команд: {e}")
 
 def update_status():
     """Обновляет статус для MCP сервера."""

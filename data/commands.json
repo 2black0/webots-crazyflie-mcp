@@ -1,0 +1,7 @@
+{
+  "action": "set_arm_position",
+  "arm": "right",
+  "shoulder_pitch": 1.5,
+  "shoulder_roll": 0.0,
+  "timestamp": 1752691393.95288
+}
