@@ -265,6 +265,47 @@ def play_motion(motion_name: str) -> str:
 
 
 @mcp.tool()
+def set_led_color(color: str, part: str = 'all') -> str:
+    """
+    Устанавливает цвет светодиодов робота.
+
+    Args:
+        color: Название цвета ('red', 'green', 'blue', 'white', 'off') или HEX-код (например, '#FF0000').
+        part: Часть тела для включения (пока поддерживается только 'all').
+    """
+    color_map = {
+        "red": 0xFF0000,
+        "green": 0x00FF00,
+        "blue": 0x0000FF,
+        "white": 0xFFFFFF,
+        "off": 0x000000
+    }
+
+    if color.lower() in color_map:
+        rgb_color = color_map[color.lower()]
+    elif color.startswith('#') and len(color) == 7:
+        try:
+            rgb_color = int(color[1:], 16)
+        except ValueError:
+            return f"❌ Неверный HEX-код цвета: {color}"
+    else:
+        return f"❌ Неверный цвет: {color}. Используйте название или HEX-код."
+
+    command = {
+        "action": "set_leds",
+        "color": rgb_color
+    }
+
+    if save_command(command):
+        if wait_for_status_update():
+            return f"✅ Команда на установку цвета '{color}' отправлена."
+        else:
+            return f"⚠️ Команда на установку цвета '{color}' отправлена, но подтверждение не получено."
+    else:
+        return f"❌ Ошибка отправки команды на установку цвета."
+
+
+@mcp.tool()
 def get_robot_capabilities() -> str:
     """Получает список доступных возможностей робота."""
     capabilities = {

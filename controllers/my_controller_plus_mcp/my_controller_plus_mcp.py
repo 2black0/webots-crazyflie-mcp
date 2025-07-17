@@ -131,6 +131,23 @@ except Exception as e:
     camera_found = False
     print(f"❌ Ошибка инициализации камеры: {e}")
 
+# --- Инициализация светодиодов ---
+leds = {}
+led_names = [
+    "ChestBoard/Led", "RFoot/Led", "LFoot/Led",
+    "Face/Led/Right", "Face/Led/Left",
+    "Ears/Led/Right", "Ears/Led/Left"
+]
+leds_found = True
+try:
+    for led_name in led_names:
+        leds[led_name] = robot.getDevice(led_name)
+    print("✅ Все светодиоды найдены")
+except Exception as e:
+    leds_found = False
+    print(f"❌ Ошибка инициализации светодиодов: {e}")
+
+
 # --- Функции валидации ---
 def validate_motor_position(motor_name, position):
     """
@@ -406,6 +423,18 @@ def process_commands():
                 print(f"✅ Изображение сохранено в {image_path}")
             else:
                 print("❌ Камера не найдена, невозможно получить изображение")
+
+        elif action == "set_leds":
+            if leds_found:
+                color = command.get('color', 0)
+                for led_name, led in leds.items():
+                    try:
+                        led.set(color)
+                    except Exception as e:
+                        print(f"❌ Ошибка установки цвета для {led_name}: {e}")
+                print(f"✅ Установлен цвет светодиодов: {hex(color)}")
+            else:
+                print("❌ Светодиоды не найдены, невозможно установить цвет")
 
         elif action == "validate_position":
             # Новая команда для проверки валидности позиции
