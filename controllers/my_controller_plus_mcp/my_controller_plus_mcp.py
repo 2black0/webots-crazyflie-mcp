@@ -5,6 +5,7 @@
 1. Управляет роботом в Webots
 2. Запускает MCP сервер в отдельном потоке
 3. Обменивается данными с MCP сервером через файлы
+4. Валидирует позиции моторов для безопасного управления
 """
 
 import json
@@ -34,6 +35,47 @@ if COMMANDS_FILE.exists():
         print("✅ Старый файл команд очищен при запуске.")
     except OSError as e:
         print(f"❌ Ошибка очистки файла команд при запуске: {e}")
+
+# --- Диапазоны позиций моторов NAO (в радианах) ---
+MOTOR_LIMITS = {
+    # Голова
+    "HeadYaw": (-2.0857, 2.0857),      # ±119.5°
+    "HeadPitch": (-0.6720, 0.5149),    # -38.5° to 29.5°
+
+    # Плечи
+    "LShoulderPitch": (-2.0857, 2.0857),  # ±119.5°
+    "RShoulderPitch": (-2.0857, 2.0857),  # ±119.5°
+    "LShoulderRoll": (-0.3142, 1.3265),   # -18° to 76°
+    "RShoulderRoll": (-1.3265, 0.3142),   # -76° to 18°
+
+    # Локти
+    "LElbowYaw": (-2.0857, 2.0857),    # ±119.5°
+    "RElbowYaw": (-2.0857, 2.0857),    # ±119.5°
+    "LElbowRoll": (-1.5446, -0.0349),  # -88.5° to -2°
+    "RElbowRoll": (0.0349, 1.5446),    # 2° to 88.5°
+
+    # Запястья
+    "LWristYaw": (-1.8238, 1.8238),    # ±104.5°
+    "RWristYaw": (-1.8238, 1.8238),    # ±104.5°
+
+    # Бедра
+    "LHipYawPitch": (-1.145303, 0.740810),  # -65.62° to 42.44°
+    "RHipYawPitch": (-1.145303, 0.740810),  # -65.62° to 42.44°
+    "LHipRoll": (-0.379472, 0.790477),      # -21.74° to 45.29°
+    "RHipRoll": (-0.790477, 0.379472),      # -45.29° to 21.74°
+    "LHipPitch": (-1.773912, 0.484090),     # -101.63° to 27.73°
+    "RHipPitch": (-1.773912, 0.484090),     # -101.63° to 27.73°
+
+    # Колени
+    "LKneePitch": (-0.092346, 2.112528),    # -5.29° to 121.04°
+    "RKneePitch": (-0.092346, 2.112528),    # -5.29° to 121.04°
+
+    # Лодыжки
+    "LAnklePitch": (-1.189516, 0.922747),   # -68.15° to 52.86°
+    "RAnklePitch": (-1.189516, 0.922747),   # -68.15° to 52.86°
+    "LAnkleRoll": (-0.397880, 0.769001),    # -22.79° to 44.06°
+    "RAnkleRoll": (-0.769001, 0.397880),    # -44.06° to 22.79°
+}
 
 # --- Инициализация робота ---
 robot = Robot()
@@ -77,7 +119,6 @@ except Exception as e:
     motors_found = False
     print(f"❌ Ошибка инициализации моторов: {e}")
 
-
 # --- Инициализация камеры ---
 camera = None
 camera_found = True
@@ -93,39 +134,129 @@ except Exception as e:
     camera_found = False
     print(f"❌ Ошибка инициализации камеры: {e}")
 
+# --- Функции валидации ---
+def validate_motor_position(motor_name, position):
+    """
+    Валидирует позицию мотора согласно его физическим ограничениям.
+
+    Args:
+        motor_name (str): Имя мотора
+        position (float): Целевая позиция в радианах
+
+    Returns:
+        tuple: (validated_position, is_valid, warning_message)
+    """
+    if motor_name not in MOTOR_LIMITS:
+        return position, False, f"Неизвестный мотор: {motor_name}"
+
+    min_pos, max_pos = MOTOR_LIMITS[motor_name]
+
+    if min_pos <= position <= max_pos:
+        return position, True, None
+
+    # Ограничиваем позицию допустимыми пределами
+    clamped_position = max(min_pos, min(max_pos, position))
+
+    warning = (f"Позиция мотора {motor_name} ({position:.3f} рад = {math.degrees(position):.1f}°) "
+              f"выходит за пределы [{min_pos:.3f}, {max_pos:.3f}] рад "
+              f"[{math.degrees(min_pos):.1f}°, {math.degrees(max_pos):.1f}°]. "
+              f"Ограничена до {clamped_position:.3f} рад ({math.degrees(clamped_position):.1f}°)")
+
+    return clamped_position, False, warning
+
+def validate_motor_positions(positions_dict):
+    """
+    Валидирует словарь позиций моторов.
+
+    Args:
+        positions_dict (dict): Словарь {motor_name: position}
+
+    Returns:
+        tuple: (validated_positions, warnings_list)
+    """
+    validated_positions = {}
+    warnings = []
+
+    for motor_name, position in positions_dict.items():
+        validated_pos, is_valid, warning = validate_motor_position(motor_name, position)
+        validated_positions[motor_name] = validated_pos
+
+        if not is_valid and warning:
+            warnings.append(warning)
+
+    return validated_positions, warnings
+
+def set_motor_position_safe(motor_name, position):
+    """
+    Безопасно устанавливает позицию мотора с валидацией.
+
+    Args:
+        motor_name (str): Имя мотора
+        position (float): Целевая позиция в радианах
+
+    Returns:
+        bool: True если позиция была установлена успешно
+    """
+    if not motors_found or motor_name not in motors:
+        print(f"❌ Мотор {motor_name} не найден")
+        return False
+
+    validated_pos, is_valid, warning = validate_motor_position(motor_name, position)
+
+    if warning:
+        print(f"⚠️ {warning}")
+
+    try:
+        motors[motor_name].setPosition(validated_pos)
+        return True
+    except Exception as e:
+        print(f"❌ Ошибка установки позиции мотора {motor_name}: {e}")
+        return False
 
 # --- Функции управления ---
 def set_initial_pose():
-    """Устанавливает исходную позицию робота."""
+    """Устанавливает исходную позицию робота с валидацией."""
     if not motors_found:
         return
 
-    motors["HeadYaw"].setPosition(0.0)
-    motors["HeadPitch"].setPosition(0.0)
-    motors["LShoulderPitch"].setPosition(0.0)
-    motors["RShoulderPitch"].setPosition(0.0)
-    motors["LShoulderRoll"].setPosition(0.0)
-    motors["RShoulderRoll"].setPosition(0.0)
-    motors["LElbowYaw"].setPosition(0.0)
-    motors["RElbowYaw"].setPosition(0.0)
-    motors["LElbowRoll"].setPosition(0.0)
-    motors["RElbowRoll"].setPosition(0.0)
-    motors["LWristYaw"].setPosition(0.0)
-    motors["RWristYaw"].setPosition(0.0)
-    motors["LHipYawPitch"].setPosition(0.0)
-    motors["RHipYawPitch"].setPosition(0.0)
-    motors["LHipRoll"].setPosition(0.0)
-    motors["RHipRoll"].setPosition(0.0)
-    motors["LHipPitch"].setPosition(0.0)
-    motors["RHipPitch"].setPosition(0.0)
-    motors["LKneePitch"].setPosition(0.0)
-    motors["RKneePitch"].setPosition(0.0)
-    motors["LAnklePitch"].setPosition(0.0)
-    motors["RAnklePitch"].setPosition(0.0)
-    motors["LAnkleRoll"].setPosition(0.0)
-    motors["RAnkleRoll"].setPosition(0.0)
+    # Безопасные начальные позиции
+    initial_positions = {
+        "HeadYaw": 0.0,
+        "HeadPitch": 0.0,
+        "LShoulderPitch": 0.0,
+        "RShoulderPitch": 0.0,
+        "LShoulderRoll": 0.0,
+        "RShoulderRoll": 0.0,
+        "LElbowYaw": 0.0,
+        "RElbowYaw": 0.0,
+        "LElbowRoll": -0.5,  # Слегка согнутые локти
+        "RElbowRoll": 0.5,   # Слегка согнутые локти
+        "LWristYaw": 0.0,
+        "RWristYaw": 0.0,
+        "LHipYawPitch": 0.0,
+        "RHipYawPitch": 0.0,
+        "LHipRoll": 0.0,
+        "RHipRoll": 0.0,
+        "LHipPitch": 0.0,
+        "RHipPitch": 0.0,
+        "LKneePitch": 0.0,
+        "RKneePitch": 0.0,
+        "LAnklePitch": 0.0,
+        "RAnklePitch": 0.0,
+        "LAnkleRoll": 0.0,
+        "RAnkleRoll": 0.0
+    }
 
-    print("✅ Исходная позиция установлена")
+    validated_positions, warnings = validate_motor_positions(initial_positions)
+
+    for warning in warnings:
+        print(f"⚠️ {warning}")
+
+    for motor_name, position in validated_positions.items():
+        if motor_name in motors:
+            motors[motor_name].setPosition(position)
+
+    print("✅ Исходная позиция установлена с валидацией")
 
 def load_motions():
     """Загружает все файлы анимации из папки motions."""
@@ -137,7 +268,7 @@ def load_motions():
     print(f"✅ Загружено {len(motions)} анимаций.")
 
 def get_motion_first_pose(motion_path):
-    """Читает первую позу из файла .motion."""
+    """Читает первую позу из файла .motion с валидацией."""
     try:
         with open(motion_path, 'r') as f:
             for line in f:
@@ -151,11 +282,21 @@ def get_motion_first_pose(motion_path):
                         header_line = f_header.readline().strip()
 
                     motor_names_from_file = header_line.split(',')[2:]
-                    
+
                     for i, value_str in enumerate(parts[2:]):
-                        motor_name = motor_names_from_file[i]
-                        pose_data[motor_name] = float(value_str)
-                    return pose_data
+                        if i < len(motor_names_from_file):
+                            motor_name = motor_names_from_file[i]
+                            pose_data[motor_name] = float(value_str)
+
+                    # Валидируем позиции из файла анимации
+                    validated_pose, warnings = validate_motor_positions(pose_data)
+
+                    if warnings:
+                        print(f"⚠️ Предупреждения для анимации {motion_path.name}:")
+                        for warning in warnings:
+                            print(f"   {warning}")
+
+                    return validated_pose
     except Exception as e:
         print(f"❌ Ошибка чтения первой позы из {motion_path}: {e}")
     return None
@@ -177,21 +318,30 @@ def start_motion(motion_name):
     first_pose = get_motion_first_pose(motion_path)
 
     if first_pose:
-        print("smooth transition to first pose")
+        print("🔄 Плавный переход к первой позе с валидацией")
         transition_duration = 1.0  # Длительность перехода в секундах
         start_time = robot.getTime()
-        current_positions = {name: motor.getTargetPosition() for name, motor in motors.items()}
+        current_positions = {}
+
+        # Получаем текущие позиции с валидацией
+        for name, motor in motors.items():
+            try:
+                current_positions[name] = motor.getTargetPosition()
+            except:
+                current_positions[name] = 0.0
 
         while robot.getTime() - start_time < transition_duration:
             elapsed = robot.getTime() - start_time
             ratio = elapsed / transition_duration
+
             for name, target_pos in first_pose.items():
                 if name in motors:
                     current_pos = current_positions.get(name, 0.0)
                     new_pos = current_pos + (target_pos - current_pos) * ratio
-                    motors[name].setPosition(new_pos)
+                    set_motor_position_safe(name, new_pos)
+
             robot.step(timestep)
-        print("transition finished")
+        print("✅ Переход к первой позе завершен")
 
     # --- Воспроизведение основной анимации ---
     try:
@@ -210,7 +360,7 @@ def update_motion():
         robot_state['current_motion'] = None
 
 def process_commands():
-    """Обрабатывает команды от MCP сервера."""
+    """Обрабатывает команды от MCP сервера с валидацией."""
     # Блокировать команды во время анимации
     if robot_state['current_motion'] and not robot_state['current_motion'].isOver():
         return
@@ -233,9 +383,13 @@ def process_commands():
             if motors_found:
                 yaw = command.get('yaw', 0.0)
                 pitch = command.get('pitch', 0.0)
-                motors["HeadYaw"].setPosition(yaw)
-                motors["HeadPitch"].setPosition(pitch)
-                print(f"✅ Голова установлена: yaw={yaw:.2f}, pitch={pitch:.2f}")
+
+                success_yaw = set_motor_position_safe("HeadYaw", yaw)
+                success_pitch = set_motor_position_safe("HeadPitch", pitch)
+
+                if success_yaw and success_pitch:
+                    print(f"✅ Голова установлена: yaw={yaw:.3f} рад ({math.degrees(yaw):.1f}°), "
+                          f"pitch={pitch:.3f} рад ({math.degrees(pitch):.1f}°)")
 
         elif action == "set_arm_position":
             if motors_found:
@@ -244,13 +398,19 @@ def process_commands():
                 shoulder_roll = command.get('shoulder_roll', 0.0)
 
                 if arm == 'left':
-                    motors["LShoulderPitch"].setPosition(shoulder_pitch)
-                    motors["LShoulderRoll"].setPosition(shoulder_roll)
+                    success_pitch = set_motor_position_safe("LShoulderPitch", shoulder_pitch)
+                    success_roll = set_motor_position_safe("LShoulderRoll", shoulder_roll)
                 elif arm == 'right':
-                    motors["RShoulderPitch"].setPosition(shoulder_pitch)
-                    motors["RShoulderRoll"].setPosition(shoulder_roll)
+                    success_pitch = set_motor_position_safe("RShoulderPitch", shoulder_pitch)
+                    success_roll = set_motor_position_safe("RShoulderRoll", shoulder_roll)
+                else:
+                    print(f"❌ Неизвестная рука: {arm}")
+                    return
 
-                print(f"✅ Рука {arm} установлена: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}")
+                if success_pitch and success_roll:
+                    print(f"✅ Рука {arm} установлена: "
+                          f"pitch={shoulder_pitch:.3f} рад ({math.degrees(shoulder_pitch):.1f}°), "
+                          f"roll={shoulder_roll:.3f} рад ({math.degrees(shoulder_roll):.1f}°)")
 
         elif action == "start_head_scan":
             robot_state['head_scan_active'] = True
@@ -259,7 +419,7 @@ def process_commands():
         elif action == "stop_head_scan":
             robot_state['head_scan_active'] = False
             if motors_found:
-                motors["HeadYaw"].setPosition(0.0)
+                set_motor_position_safe("HeadYaw", 0.0)
             print("✅ Сканирование головой выключено")
 
         elif action == "reset_pose":
@@ -281,6 +441,21 @@ def process_commands():
                 print(f"✅ Изображение сохранено в {image_path}")
             else:
                 print("❌ Камера не найдена, невозможно получить изображение")
+
+        elif action == "validate_position":
+            # Новая команда для проверки валидности позиции
+            motor_name = command.get("motor_name")
+            position = command.get("position", 0.0)
+
+            if motor_name:
+                validated_pos, is_valid, warning = validate_motor_position(motor_name, position)
+                print(f"🔍 Валидация {motor_name}: {position:.3f} рад ({math.degrees(position):.1f}°)")
+                if is_valid:
+                    print(f"✅ Позиция валидна")
+                else:
+                    print(f"⚠️ {warning}")
+            else:
+                print("❌ Команда 'validate_position' не содержит 'motor_name'")
 
     except json.JSONDecodeError:
         # Ожидаемая ошибка, если файл пуст или некорректен
@@ -332,7 +507,8 @@ def update_status():
         "arm_positions": arm_positions,
         "walking_active": robot_state['walking_active'],
         "head_scan_active": robot_state['head_scan_active'],
-        "last_image_timestamp": robot_state.get('last_image_timestamp', 0)
+        "last_image_timestamp": robot_state.get('last_image_timestamp', 0),
+        "motor_limits": {name: {"min": limits[0], "max": limits[1]} for name, limits in MOTOR_LIMITS.items()}
     }
 
     # Записываем статус в файл
@@ -344,6 +520,9 @@ def update_status():
 
 # --- Основной цикл ---
 if __name__ == "__main__":
+    print("🔧 Инициализация с валидацией позиций моторов...")
+    print(f"📊 Загружено {len(MOTOR_LIMITS)} диапазонов позиций моторов")
+
     set_initial_pose()
     load_motions()
 
@@ -352,7 +531,7 @@ if __name__ == "__main__":
     # Основной цикл симуляции
     while robot.step(timestep) != -1:
         process_commands()
-        update_motion() # <--- Добавлено
+        update_motion()
         update_status()
 
     print("🚪 Контроллер робота завершает работу.")
