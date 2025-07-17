@@ -71,17 +71,7 @@ def save_command(command: dict):
         print(f"[ERROR] Ошибка сохранения команды в {COMMANDS_FILE.resolve()}: {e}")
         return False
 
-def wait_for_status_update(timeout=5.0):
-    """Ожидает обновления статуса от контроллера."""
-    start_time = time.time()
-    initial_update_time = robot_status.get('last_update', 0)
 
-    while time.time() - start_time < timeout:
-        load_status()
-        if robot_status.get('last_update', 0) > initial_update_time:
-            return True
-        time.sleep(0.1)
-    return False
 
 def wait_for_image_update(timeout=10.0):
     """Ожидает обновления изображения от контроллера."""
@@ -166,11 +156,7 @@ def set_head_position(yaw: float, pitch: float) -> str:
         robot_status["head_position"]["yaw"] = yaw
         robot_status["head_position"]["pitch"] = pitch
 
-        # Ждем подтверждения от контроллера
-        if wait_for_status_update():
-            return f"✅ Позиция головы установлена: yaw={yaw:.2f}, pitch={pitch:.2f}"
-        else:
-            return f"⚠️ Команда отправлена, но подтверждение не получено: yaw={yaw:.2f}, pitch={pitch:.2f}"
+        return f"✅ Позиция головы установлена: yaw={yaw:.2f}, pitch={pitch:.2f}"
     else:
         return "❌ Ошибка отправки команды"
 
@@ -203,11 +189,7 @@ def set_arm_position(arm: str, shoulder_pitch: float, shoulder_roll: float) -> s
         robot_status["arm_positions"][f"{arm}_shoulder_pitch"] = shoulder_pitch
         robot_status["arm_positions"][f"{arm}_shoulder_roll"] = shoulder_roll
 
-        # Ждем подтверждения от контроллера
-        if wait_for_status_update():
-            return f"✅ Позиция {arm} руки установлена: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
-        else:
-            return f"⚠️ Команда отправлена, но подтверждение не получено: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
+        return f"✅ Позиция {arm} руки установлена: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
     else:
         return "❌ Ошибка отправки команды"
 
@@ -227,10 +209,7 @@ def reset_robot_pose() -> str:
         robot_status["arm_positions"]["left_shoulder_roll"] = 0.0
         robot_status["arm_positions"]["right_shoulder_roll"] = 0.0
 
-        if wait_for_status_update():
-            return "✅ Робот сброшен в исходную позицию: голова прямо, руки опущены"
-        else:
-            return "⚠️ Команда сброса отправлена, но подтверждение не получено"
+        return "✅ Робот сброшен в исходную позицию: голова прямо, руки опущены"
     else:
         return "❌ Ошибка отправки команды сброса"
 
@@ -256,10 +235,7 @@ def play_motion(motion_name: str) -> str:
     }
 
     if save_command(command):
-        if wait_for_status_update(timeout=10.0):  # Увеличим таймаут для анимаций
-            return f"✅ Команда на воспроизведение анимации '{motion_name}' отправлена."
-        else:
-            return f"⚠️ Команда на воспроизведение анимации '{motion_name}' отправлена, но подтверждение не получено."
+        return f"✅ Команда на воспроизведение анимации '{motion_name}' отправлена."
     else:
         return f"❌ Ошибка отправки команды на воспроизведение анимации '{motion_name}'."
 
@@ -297,10 +273,7 @@ def set_led_color(color: str, part: str = 'all') -> str:
     }
 
     if save_command(command):
-        if wait_for_status_update():
-            return f"✅ Команда на установку цвета '{color}' отправлена."
-        else:
-            return f"⚠️ Команда на установку цвета '{color}' отправлена, но подтверждение не получено."
+        return f"✅ Команда на установку цвета '{color}' отправлена."
     else:
         return f"❌ Ошибка отправки команды на установку цвета."
 

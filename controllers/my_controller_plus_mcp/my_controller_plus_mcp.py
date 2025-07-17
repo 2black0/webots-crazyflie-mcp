@@ -322,6 +322,9 @@ def start_motion(motion_name):
         robot_state['current_motion'].stop()
         print("⏹️ Предыдущая анимация остановлена")
 
+    # Очищаем имя от расширения, если оно есть
+    motion_name = motion_name.split('.')[0]
+
     motion = motions.get(motion_name)
     if not motion:
         print(f"❌ Анимация '{motion_name}' не найдена в загруженных.")
