@@ -221,6 +221,7 @@ def process_commands():
                 start_motion(motion_name)
             else:
                 print("❌ Команда 'play_motion' не содержит 'motion_name'")
+
         elif action == "get_camera_image":
             if camera_found and camera:
                 image_path = DATA_DIR / "camera_image.jpg"

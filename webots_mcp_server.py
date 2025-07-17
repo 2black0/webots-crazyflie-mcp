@@ -301,6 +301,24 @@ def toggle_walking() -> str:
     else:
         return "❌ Ошибка отправки команды переключения ходьбы"
 
+
+@mcp.tool()
+def play_motion(motion_name: str) -> str:
+    """Воспроизводит файл анимации из папки motions."""
+    command = {
+        "action": "play_motion",
+        "motion_name": motion_name
+    }
+
+    if save_command(command):
+        if wait_for_status_update(timeout=10.0):  # Увеличим таймаут для анимаций
+            return f"✅ Команда на воспроизведение анимации '{motion_name}' отправлена."
+        else:
+            return f"⚠️ Команда на воспроизведение анимации '{motion_name}' отправлена, но подтверждение не получено."
+    else:
+        return f"❌ Ошибка отправки команды на воспроизведение анимации '{motion_name}'."
+
+
 @mcp.tool()
 def get_robot_capabilities() -> str:
     """Получает список доступных возможностей робота."""

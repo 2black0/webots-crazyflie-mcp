@@ -1,5 +1,5 @@
 {
-  "timestamp": 1752742547.4590807,
+  "timestamp": 1752744719.6982858,
   "webots_connected": true,
   "head_position": {
     "yaw": 0.0,
@@ -14,4 +14,3 @@
   "walking_active": false,
   "head_scan_active": false,
   "last_image_timestamp": 0
-}
