@@ -1,6 +1,4 @@
 {
-  "action": "set_head_position",
-  "yaw": 0.5,
-  "pitch": 0.2,
-  "timestamp": 1752697714.6548226
+  "action": "reset_pose",
+  "timestamp": 1752740794.345921
 }
