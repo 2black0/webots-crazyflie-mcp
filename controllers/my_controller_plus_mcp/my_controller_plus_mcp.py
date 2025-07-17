@@ -186,6 +186,14 @@ def start_motion(motion_name):
                     motors[name].setPosition(new_pos)
             robot.step(timestep)
         print("transition finished")
+
+        # --- Пауза для диагностики ---
+        print("⏸️ Пауза 5 секунд для проверки позы...")
+        end_pause_time = robot.getTime() + 5.0
+        while robot.getTime() < end_pause_time:
+            robot.step(timestep)
+        print("✅ Пауза завершена")
+
     # --- Воспроизведение основной анимации ---
     try:
         duration = motion.getDuration()
@@ -335,6 +343,7 @@ if __name__ == "__main__":
     # Основной цикл симуляции
     while robot.step(timestep) != -1:
         process_commands()
+        update_motion() # <--- Добавлено
         update_status()
 
     print("🚪 Контроллер робота завершает работу.")
