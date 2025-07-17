@@ -99,8 +99,8 @@ def set_initial_pose():
 
     motors["HeadYaw"].setPosition(0.0)
     motors["HeadPitch"].setPosition(0.0)
-    motors["LShoulderPitch"].setPosition(1.5)
-    motors["RShoulderPitch"].setPosition(1.5)
+    motors["LShoulderPitch"].setPosition(0.0)
+    motors["RShoulderPitch"].setPosition(0.0)
     motors["LShoulderRoll"].setPosition(0.0)
     motors["RShoulderRoll"].setPosition(0.0)
     motors["LHipYawPitch"].setPosition(0.0)
@@ -189,7 +189,7 @@ def process_commands():
         elif action == "set_arm_position":
             if motors_found:
                 arm = command.get('arm', 'left')
-                shoulder_pitch = command.get('shoulder_pitch', 1.5)
+                shoulder_pitch = command.get('shoulder_pitch', 0.0)
                 shoulder_roll = command.get('shoulder_roll', 0.0)
 
                 if arm == 'left':
@@ -243,8 +243,8 @@ def update_status():
     # Получаем текущие позиции моторов
     head_position = {"yaw": 0.0, "pitch": 0.0}
     arm_positions = {
-        "left_shoulder_pitch": 1.5,
-        "right_shoulder_pitch": 1.5,
+        "left_shoulder_pitch": 0.0,
+        "right_shoulder_pitch": 0.0,
         "left_shoulder_roll": 0.0,
         "right_shoulder_roll": 0.0
     }
