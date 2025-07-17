@@ -1,5 +1,5 @@
 {
-  "timestamp": 1752752698.495548,
+  "timestamp": 1752753750.9922457,
   "webots_connected": true,
   "head_position": {
     "yaw": 0.0,
@@ -19,7 +19,7 @@
   },
   "walking_active": false,
   "head_scan_active": false,
-  "last_image_timestamp": 0,
+  "last_image_timestamp": 1752752911.1655397,
   "motor_limits": {
     "HeadYaw": {
       "min": -2.0857,

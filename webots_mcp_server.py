@@ -97,19 +97,19 @@ def wait_for_image_update(timeout=10.0):
 
 
 @mcp.tool()
-def get_camera_image() -> str:
+def get_visual_perception() -> str:
     """
-    Получает путь к файлу изображения с камеры робота.
+    Получает визуальную информацию с камеры робота.
 
     Returns:
-        str: Абсолютный путь к файлу изображения.
+        str: Абсолютный путь к файлу изображения для анализа.
     """
     command = {
         "action": "get_camera_image"
     }
 
     if not save_command(command):
-        return "❌ Ошибка отправки команды"
+        return "❌ Ошибка отправки команды на получение изображения"
 
     if not wait_for_image_update():
         return "⚠️ Команда отправлена, но новое изображение не получено"
@@ -118,7 +118,7 @@ def get_camera_image() -> str:
     if not image_path.exists():
         return "❌ Файл изображения не найден после обновления"
 
-    return f"✅ Изображение сохранено: {image_path.resolve()}"
+    return f"✅ Получено изображение для анализа: {image_path.resolve()}"
 
 @mcp.tool()
 def get_robot_status() -> str:
@@ -210,58 +210,6 @@ def set_arm_position(arm: str, shoulder_pitch: float, shoulder_roll: float) -> s
             return f"⚠️ Команда отправлена, но подтверждение не получено: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
     else:
         return "❌ Ошибка отправки команды"
-
-@mcp.tool()
-def start_head_scan() -> str:
-    """Запускает сканирование головой для поиска объектов."""
-    command = {
-        "action": "start_head_scan"
-    }
-
-    if save_command(command):
-        if wait_for_status_update(timeout=10.0):
-            return "✅ Сканирование головой запущено"
-        else:
-            return "⚠️ Команда сканирования отправлена, но подтверждение не получено"
-    else:
-        return "❌ Ошибка отправки команды сканирования"
-
-@mcp.tool()
-def stop_head_scan() -> str:
-    """Останавливает сканирование головой."""
-    command = {
-        "action": "stop_head_scan"
-    }
-
-    if save_command(command):
-        if wait_for_status_update():
-            return "✅ Сканирование головой остановлено"
-        else:
-            return "⚠️ Команда остановки сканирования отправлена, но подтверждение не получено"
-    else:
-        return "❌ Ошибка отправки команды остановки"
-
-@mcp.tool()
-def get_recognized_objects() -> str:
-    """Получает список распознанных объектов."""
-    load_status()
-
-    objects = robot_status.get("last_recognized_objects", [])
-    if not objects:
-        return "🔍 Объекты не распознаны или робот не запущен"
-
-    objects_info = []
-    for obj in objects:
-        objects_info.append({
-            "model": obj.get("model", "Unknown"),
-            "id": obj.get("id", "Unknown"),
-            "position": obj.get("position", [0, 0, 0]),
-            "size": obj.get("size", [0, 0]),
-            "count": obj.get("count", 0),
-            "first_seen": obj.get("first_seen", 0)
-        })
-
-    return json.dumps(objects_info, indent=2, ensure_ascii=False)
 
 @mcp.tool()
 def reset_robot_pose() -> str:

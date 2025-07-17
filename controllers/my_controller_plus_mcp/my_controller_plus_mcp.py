@@ -83,9 +83,6 @@ timestep = int(robot.getBasicTimeStep())
 
 # --- Глобальные переменные ---
 robot_state = {
-    "head_scan_active": False,
-    "head_scan_amplitude": 1.0,
-    "head_scan_frequency": 0.5,
     "walking_active": False,
     "last_command_time": 0,
     "current_motion": None,
@@ -391,40 +388,8 @@ def process_commands():
                     print(f"✅ Голова установлена: yaw={yaw:.3f} рад ({math.degrees(yaw):.1f}°), "
                           f"pitch={pitch:.3f} рад ({math.degrees(pitch):.1f}°)")
 
-        elif action == "set_arm_position":
-            if motors_found:
-                arm = command.get('arm', 'left')
-                shoulder_pitch = command.get('shoulder_pitch', 0.0)
-                shoulder_roll = command.get('shoulder_roll', 0.0)
-
-                if arm == 'left':
-                    success_pitch = set_motor_position_safe("LShoulderPitch", shoulder_pitch)
-                    success_roll = set_motor_position_safe("LShoulderRoll", shoulder_roll)
-                elif arm == 'right':
-                    success_pitch = set_motor_position_safe("RShoulderPitch", shoulder_pitch)
-                    success_roll = set_motor_position_safe("RShoulderRoll", shoulder_roll)
-                else:
-                    print(f"❌ Неизвестная рука: {arm}")
-                    return
-
-                if success_pitch and success_roll:
-                    print(f"✅ Рука {arm} установлена: "
-                          f"pitch={shoulder_pitch:.3f} рад ({math.degrees(shoulder_pitch):.1f}°), "
-                          f"roll={shoulder_roll:.3f} рад ({math.degrees(shoulder_roll):.1f}°)")
-
-        elif action == "start_head_scan":
-            robot_state['head_scan_active'] = True
-            print("✅ Сканирование головой включено")
-
-        elif action == "stop_head_scan":
-            robot_state['head_scan_active'] = False
-            if motors_found:
-                set_motor_position_safe("HeadYaw", 0.0)
-            print("✅ Сканирование головой выключено")
-
         elif action == "reset_pose":
             set_initial_pose()
-            robot_state['head_scan_active'] = False
 
         elif action == "play_motion":
             motion_name = command.get("motion_name")
@@ -506,7 +471,6 @@ def update_status():
         "head_position": head_position,
         "arm_positions": arm_positions,
         "walking_active": robot_state['walking_active'],
-        "head_scan_active": robot_state['head_scan_active'],
         "last_image_timestamp": robot_state.get('last_image_timestamp', 0),
         "motor_limits": {name: {"min": limits[0], "max": limits[1]} for name, limits in MOTOR_LIMITS.items()}
     }
