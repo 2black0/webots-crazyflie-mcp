@@ -1,5 +1,4 @@
 {
-  "action": "play_motion",
-  "motion_name": "Forwards",
-  "timestamp": 1752665400.0
+  "action": "reset_pose",
+  "timestamp": 1752751760.5964215
 }

@@ -1,0 +1,121 @@
+{
+  "timestamp": 1752751921.2628064,
+  "webots_connected": true,
+  "head_position": {
+    "yaw": 0.0,
+    "pitch": 0.0
+  },
+  "arm_positions": {
+    "left_shoulder_pitch": 0.0,
+    "right_shoulder_pitch": 0.0,
+    "left_shoulder_roll": 0.0,
+    "right_shoulder_roll": 0.0,
+    "left_elbow_yaw": 0.0,
+    "right_elbow_yaw": 0.0,
+    "left_elbow_roll": -0.5,
+    "right_elbow_roll": 0.5,
+    "left_wrist_yaw": 0.0,
+    "right_wrist_yaw": 0.0
+  },
+  "walking_active": false,
+  "head_scan_active": false,
+  "last_image_timestamp": 0,
+  "motor_limits": {
+    "HeadYaw": {
+      "min": -2.0857,
+      "max": 2.0857
+    },
+    "HeadPitch": {
+      "min": -0.672,
+      "max": 0.5149
+    },
+    "LShoulderPitch": {
+      "min": -2.0857,
+      "max": 2.0857
+    },
+    "RShoulderPitch": {
+      "min": -2.0857,
+      "max": 2.0857
+    },
+    "LShoulderRoll": {
+      "min": -0.3142,
+      "max": 1.3265
+    },
+    "RShoulderRoll": {
+      "min": -1.3265,
+      "max": 0.3142
+    },
+    "LElbowYaw": {
+      "min": -2.0857,
+      "max": 2.0857
+    },
+    "RElbowYaw": {
+      "min": -2.0857,
+      "max": 2.0857
+    },
+    "LElbowRoll": {
+      "min": -1.5446,
+      "max": -0.0349
+    },
+    "RElbowRoll": {
+      "min": 0.0349,
+      "max": 1.5446
+    },
+    "LWristYaw": {
+      "min": -1.8238,
+      "max": 1.8238
+    },
+    "RWristYaw": {
+      "min": -1.8238,
+      "max": 1.8238
+    },
+    "LHipYawPitch": {
+      "min": -1.145303,
+      "max": 0.74081
+    },
+    "RHipYawPitch": {
+      "min": -1.145303,
+      "max": 0.74081
+    },
+    "LHipRoll": {
+      "min": -0.379472,
+      "max": 0.790477
+    },
+    "RHipRoll": {
+      "min": -0.790477,
+      "max": 0.379472
+    },
+    "LHipPitch": {
+      "min": -1.773912,
+      "max": 0.48409
+    },
+    "RHipPitch": {
+      "min": -1.773912,
+      "max": 0.48409
+    },
+    "LKneePitch": {
+      "min": -0.092346,
+      "max": 2.112528
+    },
+    "RKneePitch": {
+      "min": -0.092346,
+      "max": 2.112528
+    },
+    "LAnklePitch": {
+      "min": -1.189516,
+      "max": 0.922747
+    },
+    "RAnklePitch": {
+      "min": -1.189516,
+      "max": 0.922747
+    },
+    "LAnkleRoll": {
+      "min": -0.39788,
+      "max": 0.769001
+    },
+    "RAnkleRoll": {
+      "min": -0.769001,
+      "max": 0.39788
+    }
+  }
+}

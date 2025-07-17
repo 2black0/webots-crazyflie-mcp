@@ -303,6 +303,19 @@ def toggle_walking() -> str:
 
 
 @mcp.tool()
+def list_motions() -> List[str]:
+    """Возвращает список доступных файлов анимации."""
+    motions_dir = Path(__file__).parent / "motions"
+    if not motions_dir.is_dir():
+        return ["❌ Директория motions не найдена"]
+    
+    motion_files = [f.stem for f in motions_dir.glob("*.motion")]
+    if not motion_files:
+        return ["ℹ️ Файлы .motion не найдены в директории motions"]
+        
+    return motion_files
+
+@mcp.tool()
 def play_motion(motion_name: str) -> str:
     """Воспроизводит файл анимации из папки motions."""
     command = {
