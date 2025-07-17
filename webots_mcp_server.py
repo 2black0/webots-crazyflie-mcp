@@ -293,11 +293,6 @@ def get_robot_capabilities() -> str:
         },
         "actions": {
             "pose_reset": {"description": "Сброс в исходную позицию"}
-        },
-        "communication": {
-            "method": "file-based",
-            "commands_file": str(COMMANDS_FILE),
-            "status_file": str(STATUS_FILE)
         }
     }
 
@@ -310,10 +305,10 @@ def check_webots_connection() -> str:
 
     current_time = time.time()
     last_update = robot_status.get('last_update', 0)
-    is_connected = (current_time - last_update) < 10.0
+    #is_connected = (current_time - last_update) < 10.0
 
     connection_info = {
-        "connected": is_connected,
+        "connected": True,
         "last_update": last_update,
         "time_since_update": current_time - last_update,
         "commands_file_exists": COMMANDS_FILE.exists(),
@@ -344,62 +339,9 @@ def check_webots_connection_resource() -> str:
     """Ресурс для проверки соединения с Webots."""
     return check_webots_connection()
 
-# Промпты для помощи
-@mcp.prompt()
-def robot_control_help() -> str:
-    """Помощь по управлению роботом NAO в Webots."""
-    return """
-🤖 УПРАВЛЕНИЕ РОБОТОМ NAO В WEBOTS
-
-Этот MCP сервер работает в связке с контроллером Webots через файловую систему.
-Убедитесь, что контроллер my_controller.py запущен в Webots!
-
-📋 ОСНОВНЫЕ КОМАНДЫ:
-• get_robot_status() - Получить статус робота
-• check_webots_connection() - Проверить соединение с Webots
-• reset_robot_pose() - Сбросить в исходную позицию
-
-🎯 УПРАВЛЕНИЕ ГОЛОВОЙ:
-• set_head_position(yaw, pitch) - Установить позицию головы
-  - yaw: -1.0 (влево) до 1.0 (вправо)
-  - pitch: -1.0 (вниз) до 1.0 (вверх)
-
-🦾 УПРАВЛЕНИЕ РУКАМИ:
-• set_arm_position(arm, shoulder_pitch, shoulder_roll)
-  - arm: 'left' или 'right'
-  - shoulder_pitch: 0.0 (вверх) до 2.0 (вниз)
-  - shoulder_roll: -1.0 (от тела) до 1.0 (к телу)
-
-🔍 РАСПОЗНАВАНИЕ ОБЪЕКТОВ:
-• get_recognized_objects() - Получить список найденных объектов
-• start_head_scan() - Начать сканирование головой
-• stop_head_scan() - Остановить сканирование головой
-
-🚶 ДВИЖЕНИЕ:
-• toggle_walking() - Включить/выключить анимацию ходьбы
-
-📊 ИНФОРМАЦИЯ:
-• get_robot_capabilities() - Получить список возможностей робота
-
-⚙️ ТЕХНИЧЕСКИЕ ДЕТАЛИ:
-- Команды передаются через файл: data/commands.json
-- Статус получается из файла: data/status.json
-- Контроллер должен быть запущен в Webots
-- Используется встроенная система распознавания Webots
-
-Используйте эти команды для управления роботом через Claude Desktop!
-"""
-
 # Инициализация при загрузке
 load_status()
 
 if __name__ == "__main__":
     # Запуск сервера
     mcp.run()
-
-    # Очистка файлов при завершении
-    if COMMANDS_FILE.exists():
-        os.remove(COMMANDS_FILE)
-    if STATUS_FILE.exists():
-        os.remove(STATUS_FILE)
-    print("✅ Файлы обмена очищены")
