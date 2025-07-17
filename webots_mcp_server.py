@@ -235,22 +235,6 @@ def reset_robot_pose() -> str:
         return "❌ Ошибка отправки команды сброса"
 
 @mcp.tool()
-def toggle_walking() -> str:
-    """Включает/выключает анимацию ходьбы."""
-    command = {
-        "action": "toggle_walking"
-    }
-
-    if save_command(command):
-        if wait_for_status_update():
-            return "✅ Команда переключения ходьбы выполнена"
-        else:
-            return "⚠️ Команда переключения ходьбы отправлена, но подтверждение не получено"
-    else:
-        return "❌ Ошибка отправки команды переключения ходьбы"
-
-
-@mcp.tool()
 def list_motions() -> List[str]:
     """Возвращает список доступных файлов анимации."""
     motions_dir = Path(__file__).parent / "motions"
@@ -291,13 +275,9 @@ def get_robot_capabilities() -> str:
             "shoulder_roll": {"min": -1.0, "max": 1.0, "description": "Прижатие/отведение руки"}
         },
         "sensors": {
-            "camera": {"description": "Камера с системой распознавания объектов Webots"},
-            "recognition": {"description": "Встроенная система распознавания объектов Webots"}
+            "camera": {"description": "Камера  Webots"}
         },
         "actions": {
-            "walking": {"description": "Анимация ходьбы"},
-            "head_scanning": {"description": "Сканирование головой для поиска объектов"},
-            "object_detection": {"description": "Обнаружение и отслеживание объектов"},
             "pose_reset": {"description": "Сброс в исходную позицию"}
         },
         "communication": {

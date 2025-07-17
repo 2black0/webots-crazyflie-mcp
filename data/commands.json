@@ -1,4 +1,5 @@
 {
-  "action": "reset_pose",
-  "timestamp": 1752753532.3603845
+  "action": "play_motion",
+  "motion_name": "HandWave",
+  "timestamp": 1752754560.63711
 }
