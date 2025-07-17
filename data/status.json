@@ -1,16 +1,17 @@
 {
-  "timestamp": 1752744719.6982858,
+  "timestamp": 1752745375.4541676,
   "webots_connected": true,
   "head_position": {
-    "yaw": 0.0,
-    "pitch": 0.0
+    "yaw": -0.003,
+    "pitch": -0.19
   },
   "arm_positions": {
-    "left_shoulder_pitch": 0.0,
-    "right_shoulder_pitch": 0.0,
-    "left_shoulder_roll": 0.0,
-    "right_shoulder_roll": 0.0
+    "left_shoulder_pitch": 1.529,
+    "right_shoulder_pitch": 1.516,
+    "left_shoulder_roll": 0.107,
+    "right_shoulder_roll": -0.1
   },
   "walking_active": false,
   "head_scan_active": false,
   "last_image_timestamp": 0
+}

@@ -127,10 +127,33 @@ def load_motions():
         motions[name] = Motion(str(motion_file))
     print(f"✅ Загружено {len(motions)} анимаций.")
 
+def get_motion_first_pose(motion_path):
+    """Читает первую позу из файла .motion."""
+    try:
+        with open(motion_path, 'r') as f:
+            for line in f:
+                if line.startswith('#') or not line.strip():
+                    continue
+                parts = line.split(',')
+                if len(parts) > 1 and 'Pose' in parts[1]:
+                    pose_data = {}
+                    header_line = ""
+                    with open(motion_path, 'r') as f_header:
+                        header_line = f_header.readline().strip()
+
+                    motor_names_from_file = header_line.split(',')[2:]
+                    
+                    for i, value_str in enumerate(parts[2:]):
+                        motor_name = motor_names_from_file[i]
+                        pose_data[motor_name] = float(value_str)
+                    return pose_data
+    except Exception as e:
+        print(f"❌ Ошибка чтения первой позы из {motion_path}: {e}")
+    return None
+
 def start_motion(motion_name):
-    """Начинает воспроизведение файла анимации."""
+    """Плавно переходит в начальную позу и начинает анимацию."""
     global robot_state
-    # Останавливаем текущую анимацию, если она есть
     if robot_state['current_motion'] and not robot_state['current_motion'].isOver():
         robot_state['current_motion'].stop()
         print("⏹️ Предыдущая анимация остановлена")
@@ -141,6 +164,29 @@ def start_motion(motion_name):
         robot_state['current_motion'] = None
         return
 
+    # --- Плавный переход в начальную позу ---
+    motion_path = ROBOT_DIR / "motions" / (motion_name + ".motion")
+    first_pose = get_motion_first_pose(motion_path)
+
+    if first_pose:
+        print("smooth transition to first pose")
+        transition_duration = 1.0  # Длительность перехода в секундах
+        start_time = robot.getTime()
+        current_positions = {}
+        for name, motor in motors.items():
+            current_positions[name] = motor.getTargetPosition()
+
+        while robot.getTime() - start_time < transition_duration:
+            elapsed = robot.getTime() - start_time
+            ratio = elapsed / transition_duration
+            for name, target_pos in first_pose.items():
+                if name in motors:
+                    current_pos = current_positions.get(name, 0.0)
+                    new_pos = current_pos + (target_pos - current_pos) * ratio
+                    motors[name].setPosition(new_pos)
+            robot.step(timestep)
+        print("transition finished")
+    # --- Воспроизведение основной анимации ---
     try:
         duration = motion.getDuration()
         print(f"⏱️ Длительность анимации '{motion_name}': {duration:.2f} мс")
