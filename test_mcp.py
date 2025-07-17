@@ -4,7 +4,7 @@ import os
 
 # Импортируем сам сервер и КОНКРЕТНЫЕ функции, которые будем вызывать
 from webots_mcp_server import mcp, COMMANDS_FILE, STATUS_FILE, \
-    get_robot_status, set_head_position, reset_robot_pose
+    get_robot_status, set_head_position, reset_robot_pose, set_arm_position
 
 def run_server():
     """Функция для запуска MCP сервера в потоке."""
@@ -28,7 +28,13 @@ def run_test_commands():
     # Теперь файл должен быть создан
     print(f"[КЛИЕНТ] Файл {COMMANDS_FILE.name} существует: {COMMANDS_FILE.exists()}")
 
-    print("\n[КЛИЕНТ] 3. Сброс позиции робота...")
+    print("\n[КЛИЕНТ] 3. Опускание рук...")
+    left_arm_result = set_arm_position(arm='left', shoulder_pitch=0.0, shoulder_roll=0.0)
+    print(f"[КЛИЕНТ] Ответ сервера (левая рука): {left_arm_result}")
+    right_arm_result = set_arm_position(arm='right', shoulder_pitch=0.0, shoulder_roll=0.0)
+    print(f"[КЛИЕНТ] Ответ сервера (правая рука): {right_arm_result}")
+
+    print("\n[КЛИЕНТ] 4. Сброс позиции робота...")
     reset_result = reset_robot_pose()
     print(f"[КЛИЕНТ] Ответ сервера: {reset_result}")
 
@@ -44,3 +50,4 @@ if __name__ == "__main__":
     run_test_commands()
 
     time.sleep(1)
+
