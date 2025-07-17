@@ -57,6 +57,9 @@ motor_names = [
     "HeadYaw", "HeadPitch",
     "LShoulderPitch", "RShoulderPitch",
     "LShoulderRoll", "RShoulderRoll",
+    "LElbowYaw", "RElbowYaw",
+    "LElbowRoll", "RElbowRoll",
+    "LWristYaw", "RWristYaw",
     "LHipYawPitch", "RHipYawPitch",
     "LHipRoll", "RHipRoll",
     "LHipPitch", "RHipPitch",
@@ -103,6 +106,12 @@ def set_initial_pose():
     motors["RShoulderPitch"].setPosition(0.0)
     motors["LShoulderRoll"].setPosition(0.0)
     motors["RShoulderRoll"].setPosition(0.0)
+    motors["LElbowYaw"].setPosition(0.0)
+    motors["RElbowYaw"].setPosition(0.0)
+    motors["LElbowRoll"].setPosition(0.0)
+    motors["RElbowRoll"].setPosition(0.0)
+    motors["LWristYaw"].setPosition(0.0)
+    motors["RWristYaw"].setPosition(0.0)
     motors["LHipYawPitch"].setPosition(0.0)
     motors["RHipYawPitch"].setPosition(0.0)
     motors["LHipRoll"].setPosition(0.0)
@@ -164,7 +173,6 @@ def start_motion(motion_name):
         robot_state['current_motion'] = None
         return
 
-    # --- Плавный переход в начальную позу ---
     motion_path = ROBOT_DIR / "motions" / (motion_name + ".motion")
     first_pose = get_motion_first_pose(motion_path)
 
@@ -172,9 +180,7 @@ def start_motion(motion_name):
         print("smooth transition to first pose")
         transition_duration = 1.0  # Длительность перехода в секундах
         start_time = robot.getTime()
-        current_positions = {}
-        for name, motor in motors.items():
-            current_positions[name] = motor.getTargetPosition()
+        current_positions = {name: motor.getTargetPosition() for name, motor in motors.items()}
 
         while robot.getTime() - start_time < transition_duration:
             elapsed = robot.getTime() - start_time
@@ -187,17 +193,8 @@ def start_motion(motion_name):
             robot.step(timestep)
         print("transition finished")
 
-        # --- Пауза для диагностики ---
-        print("⏸️ Пауза 5 секунд для проверки позы...")
-        end_pause_time = robot.getTime() + 5.0
-        while robot.getTime() < end_pause_time:
-            robot.step(timestep)
-        print("✅ Пауза завершена")
-
     # --- Воспроизведение основной анимации ---
     try:
-        duration = motion.getDuration()
-        print(f"⏱️ Длительность анимации '{motion_name}': {duration:.2f} мс")
         motion.play()
         robot_state['current_motion'] = motion
         print(f"▶️ Воспроизведение анимации: {motion_name}")
@@ -301,7 +298,13 @@ def update_status():
         "left_shoulder_pitch": 0.0,
         "right_shoulder_pitch": 0.0,
         "left_shoulder_roll": 0.0,
-        "right_shoulder_roll": 0.0
+        "right_shoulder_roll": 0.0,
+        "left_elbow_yaw": 0.0,
+        "right_elbow_yaw": 0.0,
+        "left_elbow_roll": 0.0,
+        "right_elbow_roll": 0.0,
+        "left_wrist_yaw": 0.0,
+        "right_wrist_yaw": 0.0
     }
 
     if motors_found:
@@ -312,6 +315,12 @@ def update_status():
             arm_positions["right_shoulder_pitch"] = motors["RShoulderPitch"].getTargetPosition()
             arm_positions["left_shoulder_roll"] = motors["LShoulderRoll"].getTargetPosition()
             arm_positions["right_shoulder_roll"] = motors["RShoulderRoll"].getTargetPosition()
+            arm_positions["left_elbow_yaw"] = motors["LElbowYaw"].getTargetPosition()
+            arm_positions["right_elbow_yaw"] = motors["RElbowYaw"].getTargetPosition()
+            arm_positions["left_elbow_roll"] = motors["LElbowRoll"].getTargetPosition()
+            arm_positions["right_elbow_roll"] = motors["RElbowRoll"].getTargetPosition()
+            arm_positions["left_wrist_yaw"] = motors["LWristYaw"].getTargetPosition()
+            arm_positions["right_wrist_yaw"] = motors["RWristYaw"].getTargetPosition()
         except Exception as e:
             print(f"❌ Ошибка получения позиций моторов: {e}")
 
