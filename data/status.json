@@ -1,24 +1,24 @@
 {
-  "timestamp": 1752775587.8042066,
+  "timestamp": 1752825834.1261415,
   "webots_connected": true,
   "head_position": {
-    "yaw": -0.037,
-    "pitch": 0.061
+    "yaw": 0.0,
+    "pitch": 0.0
   },
   "arm_positions": {
-    "left_shoulder_pitch": 0.966,
-    "right_shoulder_pitch": 1.052,
-    "left_shoulder_roll": 0.307,
-    "right_shoulder_roll": -0.21,
-    "left_elbow_yaw": -0.879,
-    "right_elbow_yaw": 0.396,
-    "left_elbow_roll": -0.998,
-    "right_elbow_roll": 0.621,
-    "left_wrist_yaw": 0.387,
-    "right_wrist_yaw": -0.03
+    "left_shoulder_pitch": 0.0,
+    "right_shoulder_pitch": 0.0,
+    "left_shoulder_roll": 0.0,
+    "right_shoulder_roll": 0.0,
+    "left_elbow_yaw": 0.0,
+    "right_elbow_yaw": 0.0,
+    "left_elbow_roll": -0.035,
+    "right_elbow_roll": 0.035,
+    "left_wrist_yaw": 0.0,
+    "right_wrist_yaw": 0.0
   },
   "walking_active": false,
-  "last_image_timestamp": 1752775526.7380974,
+  "last_image_timestamp": 1752825723.3115678,
   "motor_limits": {
     "HeadYaw": {
       "min": -2.0857,
@@ -117,4 +117,3 @@
       "max": 0.39788
     }
   }
-}

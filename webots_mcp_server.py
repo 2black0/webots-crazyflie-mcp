@@ -89,10 +89,8 @@ def wait_for_image_update(timeout=10.0):
 @mcp.tool()
 def get_visual_perception() -> str:
     """
-    Получает визуальную информацию с камеры робота.
+    Получает визуальную информацию с камеры робота в jpg.
 
-    Returns:
-        str: Абсолютный путь к файлу изображения для анализа.
     """
     command = {
         "action": "get_camera_image"
@@ -215,7 +213,7 @@ def reset_robot_pose() -> str:
 
 @mcp.tool()
 def list_motions() -> List[str]:
-    """Возвращает список доступных файлов анимации."""
+    """Возвращает список доступных движений."""
     motions_dir = Path(__file__).parent / "motions"
     if not motions_dir.is_dir():
         return ["❌ Директория motions не найдена"]
@@ -228,7 +226,7 @@ def list_motions() -> List[str]:
 
 @mcp.tool()
 def play_motion(motion_name: str) -> str:
-    """Воспроизводит файл анимации из папки motions."""
+    """Запускает движение робота."""
     command = {
         "action": "play_motion",
         "motion_name": motion_name
@@ -317,27 +315,6 @@ def check_webots_connection() -> str:
     }
 
     return json.dumps(connection_info, indent=2, ensure_ascii=False)
-
-# Ресурсы для Claude Desktop
-@mcp.resource("robot://status")
-def get_robot_status_resource() -> str:
-    """Ресурс для получения текущего статуса робота."""
-    return get_robot_status()
-
-@mcp.resource("robot://objects")
-def get_recognized_objects_resource() -> str:
-    """Ресурс для получения списка распознанных объектов."""
-    return get_recognized_objects()
-
-@mcp.resource("robot://capabilities")
-def get_robot_capabilities_resource() -> str:
-    """Ресурс для получения возможностей робота."""
-    return get_robot_capabilities()
-
-@mcp.resource("robot://connection")
-def check_webots_connection_resource() -> str:
-    """Ресурс для проверки соединения с Webots."""
-    return check_webots_connection()
 
 # Инициализация при загрузке
 load_status()

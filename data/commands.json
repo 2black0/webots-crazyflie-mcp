@@ -1,5 +1,4 @@
 {
-  "action": "play_motion",
-  "motion_name": "StandUpAfterSquatting",
-  "timestamp": 1752772952.6737742
+  "action": "get_camera_image",
+  "timestamp": 1752825723.2468216
 }
