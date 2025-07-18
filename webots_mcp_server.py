@@ -300,15 +300,17 @@ def list_motions() -> List[Dict[str, Any]]:
     logger.info("Motion list successfully generated.")
     return motion_details
 
+import time
+
+
 @mcp.tool()
 def play_motion(motion_name: str) -> Dict[str, Any]:
     """
-    Starts a robot motion and returns its duration.
+    Starts a robot motion, WAITS for it to complete, and then returns.
     """
     logger.info(f"Animation playback requested: {motion_name}")
     motions_dir = Path(__file__).parent / "motions"
-    
-    # Clear the name from the extension if it exists
+
     base_motion_name = motion_name.split('.')[0]
     motion_file = motions_dir / f"{base_motion_name}.motion"
 
@@ -324,15 +326,12 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
                 last_line = lines[-1]
                 time_str = last_line.split(',')[0]
                 time_parts = time_str.split(':')
-                # Format MM:SS:ms (where ms is milliseconds)
                 minutes = int(time_parts[0])
                 seconds = int(time_parts[1])
                 milliseconds = int(time_parts[2])
-
                 total_seconds = (minutes * 60) + seconds + (milliseconds / 1000.0)
                 duration_seconds = round(total_seconds, 2)
-                logger.info(f"Animation duration for '{motion_name}' determined: {duration_seconds}s")
-    except (IOError, ValueError, IndexError) as e:
+    except Exception as e:
         logger.warning(f"Failed to read duration for {motion_file.name}: {e}")
         return {"status": f"⚠️ Failed to determine duration for '{motion_name}'.", "duration_seconds": 0}
 
@@ -342,8 +341,12 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
     }
 
     if save_command(command):
+        logger.info(f"Command to play '{motion_name}' sent. Waiting for {duration_seconds:.2f} seconds...")
+        time.sleep(duration_seconds+2)
+        logger.info(f"Motion '{motion_name}' finished.")
+
         return {
-            "status": f"✅ Command to play animation '{motion_name}' sent.",
+            "status": f"✅ Motion '{motion_name}' completed successfully.",
             "duration_seconds": duration_seconds
         }
     else:
@@ -352,7 +355,6 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
             "status": f"❌ Error sending command to play animation '{motion_name}'.",
             "duration_seconds": 0
         }
-
 
 @mcp.tool()
 def set_led_color(color: str, part: str = 'all') -> str:

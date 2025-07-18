@@ -1,20 +1,20 @@
 {
-  "timestamp": 1752851731.1178071,
+  "timestamp": 1752853924.2347236,
   "webots_connected": true,
   "robot_position": {
-    "x": 1.597353890445818,
-    "y": 1.3971815047575142,
-    "z": 0.30561200266731753
+    "x": 1.2831663142870504,
+    "y": 1.730427663061413,
+    "z": 0.3056194889127112
   },
   "head_position": {
     "yaw": 0.5,
     "pitch": -0.2
   },
   "arm_positions": {
-    "left_shoulder_pitch": 1.745,
-    "right_shoulder_pitch": 1.745,
+    "left_shoulder_pitch": 1.49797,
+    "right_shoulder_pitch": 1.4,
     "left_shoulder_roll": 0.349,
-    "right_shoulder_roll": -0.349,
+    "right_shoulder_roll": 0.0,
     "left_elbow_yaw": -1.396,
     "right_elbow_yaw": 1.396,
     "left_elbow_roll": -1.396,

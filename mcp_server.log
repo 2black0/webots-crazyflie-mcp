@@ -473,3 +473,58 @@
 2025-07-18 18:11:56,545 - __main__ - INFO - Animation playback requested: Forwards
 2025-07-18 18:11:56,546 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
 2025-07-18 18:11:56,548 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:22:14,385 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:22:14,389 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:22:14,428 - root - WARNING - Failed to validate request: Received request before initialization was complete
+2025-07-18 18:23:10,077 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:23:10,078 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:29:43,921 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:29:43,923 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:29:58,624 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:29:58,626 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:31:44,850 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:31:44,855 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:31:44,905 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-07-18 18:32:51,144 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:32:51,144 - __main__ - INFO - List of available motions requested.
+2025-07-18 18:32:51,144 - __main__ - INFO - Found 17 animation files.
+2025-07-18 18:32:51,175 - __main__ - INFO - Motion list successfully generated.
+2025-07-18 18:33:00,739 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:33:00,739 - __main__ - INFO - List of available motions requested.
+2025-07-18 18:33:00,739 - __main__ - INFO - Found 17 animation files.
+2025-07-18 18:33:00,764 - __main__ - INFO - Motion list successfully generated.
+2025-07-18 18:33:02,749 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:33:02,749 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:33:02,759 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:33:02,759 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:33:05,364 - __main__ - INFO - Motion 'Forwards' finished.
+2025-07-18 18:33:08,064 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:33:08,064 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:33:08,064 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:33:08,064 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:33:10,673 - __main__ - INFO - Motion 'Forwards' finished.
+2025-07-18 18:33:34,796 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:33:34,797 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:33:34,800 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:33:34,800 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:33:37,401 - __main__ - INFO - Motion 'Forwards' finished.
+2025-07-18 18:33:39,524 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:33:39,529 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:33:39,540 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:33:39,540 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:33:42,141 - __main__ - INFO - Motion 'Forwards' finished.
+2025-07-18 18:33:44,054 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:33:44,055 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:33:44,062 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:33:44,062 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:33:46,663 - __main__ - INFO - Motion 'Forwards' finished.
+2025-07-18 18:34:26,249 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:34:26,250 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:34:26,253 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:34:26,253 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:34:28,854 - __main__ - INFO - Motion 'Forwards' finished.
+2025-07-18 18:34:30,985 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:34:30,986 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:34:30,988 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:34:30,989 - __main__ - INFO - Command to play 'Forwards' sent. Waiting for 2.60 seconds...
+2025-07-18 18:34:33,589 - __main__ - INFO - Motion 'Forwards' finished.
