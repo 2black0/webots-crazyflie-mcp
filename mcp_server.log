@@ -16,3 +16,247 @@
 2025-07-18 13:39:57,865 - __main__ - INFO - Starting MCP server.
 2025-07-18 13:50:09,750 - __main__ - INFO - Initializing MCP server...
 2025-07-18 13:50:09,751 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:51:51,093 - __main__ - INFO - Initializing MCP server...
+2025-07-18 16:51:51,096 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:52:27,781 - __main__ - INFO - Initializing MCP server...
+2025-07-18 16:52:27,784 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:56:22,848 - __main__ - INFO - Initializing MCP server...
+2025-07-18 16:56:22,850 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:56:22,948 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-07-18 17:01:44,944 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:01:44,980 - __main__ - INFO - List of robot capabilities requested.
+2025-07-18 17:01:44,981 - __main__ - INFO - List of robot capabilities successfully generated.
+2025-07-18 17:02:18,888 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:18,893 - __main__ - INFO - Robot status requested.
+2025-07-18 17:02:18,898 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:02:22,427 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:22,427 - __main__ - INFO - Setting head position: yaw=0.0, pitch=0.0
+2025-07-18 17:02:22,434 - __main__ - INFO - Command 'set_head_position' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:22,434 - __main__ - INFO - Local head status updated: yaw=0.00, pitch=0.00
+2025-07-18 17:02:24,814 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:24,815 - __main__ - INFO - Setting arm position 'left': pitch=1.0, roll=0.5
+2025-07-18 17:02:24,821 - __main__ - INFO - Command 'set_arm_position' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:24,821 - __main__ - INFO - Local arm status 'left' updated: pitch=1.00, roll=0.50
+2025-07-18 17:02:28,281 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:28,281 - __main__ - INFO - Robot pose reset requested.
+2025-07-18 17:02:28,281 - __main__ - INFO - Command 'reset_pose' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:28,281 - __main__ - INFO - Local status reset to initial position.
+2025-07-18 17:02:31,045 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:31,049 - __main__ - INFO - List of available motions requested.
+2025-07-18 17:02:31,059 - __main__ - INFO - Found 17 animation files.
+2025-07-18 17:02:31,100 - __main__ - INFO - Motion list successfully generated.
+2025-07-18 17:02:34,471 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:34,473 - __main__ - INFO - Animation playback requested: Squat
+2025-07-18 17:02:34,473 - __main__ - INFO - Animation duration for 'Squat' determined: 1.75s
+2025-07-18 17:02:34,480 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:37,379 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:37,379 - __main__ - INFO - Setting LED color: color='blue', part='all'
+2025-07-18 17:02:37,379 - __main__ - INFO - Command 'set_leds' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:40,203 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:40,205 - __main__ - INFO - Visual information requested.
+2025-07-18 17:02:40,207 - __main__ - INFO - Command 'get_camera_image' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:40,207 - __main__ - INFO - Waiting for image update. Initial time: 1752846806.6148376
+2025-07-18 17:02:40,318 - __main__ - INFO - Image update detected.
+2025-07-18 17:02:40,323 - __main__ - INFO - Image successfully received: D:\webots-mcp\data\camera_image.jpg
+2025-07-18 17:02:44,856 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:44,859 - __main__ - INFO - Webots connection check requested.
+2025-07-18 17:02:44,865 - __main__ - INFO - Connection status: {'connected': True, 'last_update': 0, 'time_since_update': 1752847364.8602333, 'commands_file_exists': True, 'status_file_exists': True, 'webots_reported_status': True}
+2025-07-18 17:03:11,320 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:11,322 - __main__ - INFO - List of available motions requested.
+2025-07-18 17:03:11,322 - __main__ - INFO - Found 17 animation files.
+2025-07-18 17:03:11,364 - __main__ - INFO - Motion list successfully generated.
+2025-07-18 17:03:13,880 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:13,880 - __main__ - INFO - Animation playback requested: Backwards
+2025-07-18 17:03:13,884 - __main__ - INFO - Animation duration for 'Backwards' determined: 2.6s
+2025-07-18 17:03:13,890 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:43,074 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:43,075 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 17:03:43,083 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 17:03:43,090 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:45,683 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:45,683 - __main__ - INFO - Animation playback requested: Forwards50
+2025-07-18 17:03:45,685 - __main__ - INFO - Animation duration for 'Forwards50' determined: 6.76s
+2025-07-18 17:03:45,687 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:47,899 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:47,899 - __main__ - INFO - Animation playback requested: HandWave
+2025-07-18 17:03:47,900 - __main__ - INFO - Animation duration for 'HandWave' determined: 5.0s
+2025-07-18 17:03:47,907 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:50,208 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:50,209 - __main__ - INFO - Animation playback requested: Shoot
+2025-07-18 17:03:50,210 - __main__ - INFO - Animation duration for 'Shoot' determined: 4.8s
+2025-07-18 17:03:50,219 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:52,638 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:52,639 - __main__ - INFO - Animation playback requested: SideStepLeft
+2025-07-18 17:03:52,640 - __main__ - INFO - Animation duration for 'SideStepLeft' determined: 4.92s
+2025-07-18 17:03:52,641 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:55,345 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:55,345 - __main__ - INFO - Animation playback requested: SideStepRight
+2025-07-18 17:03:55,348 - __main__ - INFO - Animation duration for 'SideStepRight' determined: 5.76s
+2025-07-18 17:03:55,351 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:56,493 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:56,494 - __main__ - INFO - Animation playback requested: Squat
+2025-07-18 17:03:56,496 - __main__ - INFO - Animation duration for 'Squat' determined: 1.75s
+2025-07-18 17:03:56,497 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:57,761 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:57,763 - __main__ - INFO - Animation playback requested: StandUpAfterSquatting
+2025-07-18 17:03:57,766 - __main__ - INFO - Animation duration for 'StandUpAfterSquatting' determined: 1.0s
+2025-07-18 17:03:57,768 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:59,098 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:59,098 - __main__ - INFO - Animation playback requested: StandUpFromFront
+2025-07-18 17:03:59,099 - __main__ - INFO - Animation duration for 'StandUpFromFront' determined: 3.7s
+2025-07-18 17:03:59,103 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:01,386 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:01,386 - __main__ - INFO - Animation playback requested: TaiChi
+2025-07-18 17:04:01,390 - __main__ - INFO - Animation duration for 'TaiChi' determined: 50.0s
+2025-07-18 17:04:01,399 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:03,777 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:03,778 - __main__ - INFO - Animation playback requested: TurnLeft180
+2025-07-18 17:04:03,783 - __main__ - INFO - Animation duration for 'TurnLeft180' determined: 9.0s
+2025-07-18 17:04:03,791 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:05,011 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:05,011 - __main__ - INFO - Animation playback requested: TurnLeft40
+2025-07-18 17:04:05,013 - __main__ - INFO - Animation duration for 'TurnLeft40' determined: 2.88s
+2025-07-18 17:04:05,016 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:06,406 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:06,407 - __main__ - INFO - Animation playback requested: TurnLeft60
+2025-07-18 17:04:06,415 - __main__ - INFO - Animation duration for 'TurnLeft60' determined: 4.52s
+2025-07-18 17:04:06,423 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:07,631 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:07,631 - __main__ - INFO - Animation playback requested: TurnRight40
+2025-07-18 17:04:07,635 - __main__ - INFO - Animation duration for 'TurnRight40' determined: 2.84s
+2025-07-18 17:04:07,636 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:09,085 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:09,086 - __main__ - INFO - Animation playback requested: TurnRight60
+2025-07-18 17:04:09,090 - __main__ - INFO - Animation duration for 'TurnRight60' determined: 4.52s
+2025-07-18 17:04:09,097 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:11,651 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:11,652 - __main__ - INFO - Animation playback requested: WipeForehead
+2025-07-18 17:04:11,660 - __main__ - INFO - Animation duration for 'WipeForehead' determined: 1.69s
+2025-07-18 17:04:11,666 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:08:56,598 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:08:56,603 - __main__ - INFO - Robot status requested.
+2025-07-18 17:08:56,608 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:14:42,715 - __main__ - INFO - Initializing MCP server...
+2025-07-18 17:14:42,716 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:51:51,093 - __main__ - INFO - Initializing MCP server...
+2025-07-18 16:51:51,096 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:52:27,781 - __main__ - INFO - Initializing MCP server...
+2025-07-18 16:52:27,784 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:56:22,848 - __main__ - INFO - Initializing MCP server...
+2025-07-18 16:56:22,850 - __main__ - INFO - Starting MCP server.
+2025-07-18 16:56:22,948 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-07-18 17:01:44,944 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:01:44,980 - __main__ - INFO - List of robot capabilities requested.
+2025-07-18 17:01:44,981 - __main__ - INFO - List of robot capabilities successfully generated.
+2025-07-18 17:02:18,888 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:18,893 - __main__ - INFO - Robot status requested.
+2025-07-18 17:02:18,898 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:02:22,427 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:22,427 - __main__ - INFO - Setting head position: yaw=0.0, pitch=0.0
+2025-07-18 17:02:22,434 - __main__ - INFO - Command 'set_head_position' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:22,434 - __main__ - INFO - Local head status updated: yaw=0.00, pitch=0.00
+2025-07-18 17:02:24,814 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:24,815 - __main__ - INFO - Setting arm position 'left': pitch=1.0, roll=0.5
+2025-07-18 17:02:24,821 - __main__ - INFO - Command 'set_arm_position' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:24,821 - __main__ - INFO - Local arm status 'left' updated: pitch=1.00, roll=0.50
+2025-07-18 17:02:28,281 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:28,281 - __main__ - INFO - Robot pose reset requested.
+2025-07-18 17:02:28,281 - __main__ - INFO - Command 'reset_pose' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:28,281 - __main__ - INFO - Local status reset to initial position.
+2025-07-18 17:02:31,045 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:31,049 - __main__ - INFO - List of available motions requested.
+2025-07-18 17:02:31,059 - __main__ - INFO - Found 17 animation files.
+2025-07-18 17:02:31,100 - __main__ - INFO - Motion list successfully generated.
+2025-07-18 17:02:34,471 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:34,473 - __main__ - INFO - Animation playback requested: Squat
+2025-07-18 17:02:34,473 - __main__ - INFO - Animation duration for 'Squat' determined: 1.75s
+2025-07-18 17:02:34,480 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:37,379 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:37,379 - __main__ - INFO - Setting LED color: color='blue', part='all'
+2025-07-18 17:02:37,379 - __main__ - INFO - Command 'set_leds' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:40,203 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:40,205 - __main__ - INFO - Visual information requested.
+2025-07-18 17:02:40,207 - __main__ - INFO - Command 'get_camera_image' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:02:40,207 - __main__ - INFO - Waiting for image update. Initial time: 1752846806.6148376
+2025-07-18 17:02:40,318 - __main__ - INFO - Image update detected.
+2025-07-18 17:02:40,323 - __main__ - INFO - Image successfully received: D:\webots-mcp\data\camera_image.jpg
+2025-07-18 17:02:44,856 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:02:44,859 - __main__ - INFO - Webots connection check requested.
+2025-07-18 17:02:44,865 - __main__ - INFO - Connection status: {'connected': True, 'last_update': 0, 'time_since_update': 1752847364.8602333, 'commands_file_exists': True, 'status_file_exists': True, 'webots_reported_status': True}
+2025-07-18 17:03:11,320 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:11,322 - __main__ - INFO - List of available motions requested.
+2025-07-18 17:03:11,322 - __main__ - INFO - Found 17 animation files.
+2025-07-18 17:03:11,364 - __main__ - INFO - Motion list successfully generated.
+2025-07-18 17:03:13,880 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:13,880 - __main__ - INFO - Animation playback requested: Backwards
+2025-07-18 17:03:13,884 - __main__ - INFO - Animation duration for 'Backwards' determined: 2.6s
+2025-07-18 17:03:13,890 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:43,074 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:43,075 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 17:03:43,083 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 17:03:43,090 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:45,683 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:45,683 - __main__ - INFO - Animation playback requested: Forwards50
+2025-07-18 17:03:45,685 - __main__ - INFO - Animation duration for 'Forwards50' determined: 6.76s
+2025-07-18 17:03:45,687 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:47,899 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:47,899 - __main__ - INFO - Animation playback requested: HandWave
+2025-07-18 17:03:47,900 - __main__ - INFO - Animation duration for 'HandWave' determined: 5.0s
+2025-07-18 17:03:47,907 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:50,208 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:50,209 - __main__ - INFO - Animation playback requested: Shoot
+2025-07-18 17:03:50,210 - __main__ - INFO - Animation duration for 'Shoot' determined: 4.8s
+2025-07-18 17:03:50,219 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:52,638 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:52,639 - __main__ - INFO - Animation playback requested: SideStepLeft
+2025-07-18 17:03:52,640 - __main__ - INFO - Animation duration for 'SideStepLeft' determined: 4.92s
+2025-07-18 17:03:52,641 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:55,345 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:55,345 - __main__ - INFO - Animation playback requested: SideStepRight
+2025-07-18 17:03:55,348 - __main__ - INFO - Animation duration for 'SideStepRight' determined: 5.76s
+2025-07-18 17:03:55,351 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:56,493 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:56,494 - __main__ - INFO - Animation playback requested: Squat
+2025-07-18 17:03:56,496 - __main__ - INFO - Animation duration for 'Squat' determined: 1.75s
+2025-07-18 17:03:56,497 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:57,761 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:57,763 - __main__ - INFO - Animation playback requested: StandUpAfterSquatting
+2025-07-18 17:03:57,766 - __main__ - INFO - Animation duration for 'StandUpAfterSquatting' determined: 1.0s
+2025-07-18 17:03:57,768 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:03:59,098 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:03:59,098 - __main__ - INFO - Animation playback requested: StandUpFromFront
+2025-07-18 17:03:59,099 - __main__ - INFO - Animation duration for 'StandUpFromFront' determined: 3.7s
+2025-07-18 17:03:59,103 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:01,386 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:01,386 - __main__ - INFO - Animation playback requested: TaiChi
+2025-07-18 17:04:01,390 - __main__ - INFO - Animation duration for 'TaiChi' determined: 50.0s
+2025-07-18 17:04:01,399 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:03,777 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:03,778 - __main__ - INFO - Animation playback requested: TurnLeft180
+2025-07-18 17:04:03,783 - __main__ - INFO - Animation duration for 'TurnLeft180' determined: 9.0s
+2025-07-18 17:04:03,791 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:05,011 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:05,011 - __main__ - INFO - Animation playback requested: TurnLeft40
+2025-07-18 17:04:05,013 - __main__ - INFO - Animation duration for 'TurnLeft40' determined: 2.88s
+2025-07-18 17:04:05,016 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:06,406 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:06,407 - __main__ - INFO - Animation playback requested: TurnLeft60
+2025-07-18 17:04:06,415 - __main__ - INFO - Animation duration for 'TurnLeft60' determined: 4.52s
+2025-07-18 17:04:06,423 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:07,631 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:07,631 - __main__ - INFO - Animation playback requested: TurnRight40
+2025-07-18 17:04:07,635 - __main__ - INFO - Animation duration for 'TurnRight40' determined: 2.84s
+2025-07-18 17:04:07,636 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:09,085 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:09,086 - __main__ - INFO - Animation playback requested: TurnRight60
+2025-07-18 17:04:09,090 - __main__ - INFO - Animation duration for 'TurnRight60' determined: 4.52s
+2025-07-18 17:04:09,097 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:04:11,651 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:04:11,652 - __main__ - INFO - Animation playback requested: WipeForehead
+2025-07-18 17:04:11,660 - __main__ - INFO - Animation duration for 'WipeForehead' determined: 1.69s
+2025-07-18 17:04:11,666 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:08:56,598 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:08:56,603 - __main__ - INFO - Robot status requested.
+2025-07-18 17:08:56,608 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:14:42,715 - __main__ - INFO - Initializing MCP server...
+2025-07-18 17:14:42,716 - __main__ - INFO - Starting MCP server.
