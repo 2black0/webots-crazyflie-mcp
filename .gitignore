@@ -1,1 +1,4 @@
 /.idea/
+/data/
+/mcp_server.log
+/.venv/
