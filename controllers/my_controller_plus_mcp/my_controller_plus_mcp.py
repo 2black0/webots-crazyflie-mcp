@@ -464,16 +464,6 @@ def update_status():
     """Обновляет статус для MCP сервера."""
     current_time = time.time()
 
-    # --- Получение координат робота ---
-    robot_node = robot.getSelf()
-    robot_position = [0.0, 0.0, 0.0]
-    if robot_node:
-        try:
-            robot_position = robot_node.getPosition()
-        except Exception as e:
-            print(f"❌ Ошибка получения координат робота: {e}")
-
-
     # Получаем текущие позиции моторов
     head_position = {"yaw": 0.0, "pitch": 0.0}
     arm_positions = {
@@ -510,11 +500,6 @@ def update_status():
     status_data = {
         "timestamp": current_time,
         "webots_connected": True,
-        "robot_position": {
-            "x": robot_position[0],
-            "y": robot_position[1],
-            "z": robot_position[2]
-        },
         "head_position": head_position,
         "arm_positions": arm_positions,
         "walking_active": robot_state['walking_active'],
