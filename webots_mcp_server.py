@@ -120,7 +120,7 @@ def get_visual_perception(robot_name: str) -> str:
     Gets visual information from the robot's camera in jpg format.
 
     Args:
-        robot_name (str): The name of the robot to get the image from.
+        robot_name (str): The name of the robot to get the image from. You must pass the robot's name.
     """
     logger.info(f"Visual information for {robot_name} requested.")
     command = {
@@ -145,18 +145,28 @@ def get_visual_perception(robot_name: str) -> str:
 
 @mcp.tool()
 def get_robot_position(robot_name: str) -> str:
-    """Gets the current position of the robot."""
+    """
+    Gets the current position of the robot.
+
+    Args:
+        robot_name (str): The name of the robot. You must pass the robot's name.
+    """
     logger.info(f"Robot position for {robot_name} requested.")
     load_status(robot_name)
-    
+
     robot_position = robot_status.get('robot_position', {'x': 0, 'y': 0, 'z': 0})
-    
+
     logger.info(f"Robot position for {robot_name} successfully retrieved.")
     return json.dumps(robot_position, indent=2, ensure_ascii=False)
 
 @mcp.tool()
 def get_robot_status(robot_name: str) -> str:
-    """Gets the current status of the robot."""
+    """
+    Gets the current status of the robot.
+
+    Args:
+        robot_name (str): The name of the robot. You must pass the robot's name.
+    """
     logger.info(f"Robot status for {robot_name} requested.")
     load_status(robot_name)
 
@@ -186,7 +196,7 @@ def set_head_position(robot_name: str, yaw: float, pitch: float) -> str:
     Sets the position of the robot's head.
 
     Args:
-        robot_name (str): The name of the robot.
+        robot_name (str): The name of the robot. You must pass the robot's name.
         yaw: Head rotation left-right (-1.0 to 1.0)
         pitch: Head tilt up-down (-1.0 to 1.0)
     """
@@ -217,7 +227,7 @@ def set_arm_position(robot_name: str, arm: str, shoulder_pitch: float, shoulder_
     Sets the position of the robot's arm.
 
     Args:
-        robot_name (str): The name of the robot.
+        robot_name (str): The name of the robot. You must pass the robot's name.
         arm: 'left' or 'right'
         shoulder_pitch: Arm up/down movement (0.0 to 2.0)
         shoulder_roll: Arm adduction/abduction (-1.0 to 1.0)
@@ -250,7 +260,12 @@ def set_arm_position(robot_name: str, arm: str, shoulder_pitch: float, shoulder_
 
 @mcp.tool()
 def reset_robot_pose(robot_name: str) -> str:
-    """Resets the robot to its initial position."""
+    """
+    Resets the robot to its initial position.
+
+    Args:
+        robot_name (str): The name of the robot. You must pass the robot's name.
+    """
     logger.info(f"Robot pose reset for {robot_name} requested.")
     command = {
         "action": "reset_pose"
@@ -302,7 +317,7 @@ def list_motions() -> List[Dict[str, Any]]:
                     minutes = int(time_parts[0])
                     seconds = int(time_parts[1])
                     milliseconds = int(time_parts[2])
-                    
+
                     total_seconds = (minutes * 60) + seconds + (milliseconds / 1000.0)
                     duration_seconds = round(total_seconds, 2)
         except (IOError, ValueError, IndexError) as e:
@@ -323,6 +338,10 @@ import time
 def play_motion(robot_name: str, motion_name: str) -> Dict[str, Any]:
     """
     Starts a robot motion, WAITS for it to complete, and then returns.
+
+    Args:
+        robot_name (str): The name of the robot. You must pass the robot's name.
+        motion_name (str): The name of the motion to play.
     """
     logger.info(f"Animation playback for {robot_name} requested: {motion_name}")
     motions_dir = Path(__file__).parent / "motions"
@@ -378,7 +397,7 @@ def set_led_color(robot_name: str, color: str, part: str = 'all') -> str:
     Sets the color of the robot's LEDs.
 
     Args:
-        robot_name (str): The name of the robot.
+        robot_name (str): The name of the robot. You must pass the robot's name.
         color: Color name ('red', 'green', 'blue', 'white', 'off') or HEX code (e.g., '#FF0000').
         part: Body part to light up (currently only 'all' is supported).
     """
@@ -416,17 +435,28 @@ def set_led_color(robot_name: str, color: str, part: str = 'all') -> str:
 
 
 @mcp.tool()
-def get_robot_capabilities() -> str:
-    """Gets a detailed, structured list of the robot's available capabilities."""
+def get_robot_capabilities(robot_name: str) -> str:
+    """
+    Gets a detailed, structured list of the robot's available capabilities.
+
+    Args:
+        robot_name (str): The name of the robot. You must pass the robot's name.
+    """
     logger.info("Detailed robot capabilities requested.")
     capabilities = {
         "Sensing": {
             "get_visual_perception": {
                 "description": "Captures a high-resolution image from the robot's forward-facing camera. Returns a confirmation message with the path to the saved image file.",
+                "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)"
+                },
                 "returns": "string (confirmation message)"
             },
             "get_robot_status": {
                 "description": "Retrieves a comprehensive status report of the robot's current state.",
+                "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)"
+                },
                 "returns": {
                     "running": "boolean (True if the controller is active)",
                     "webots_connected": "boolean (True if the connection to the simulator is confirmed)",
@@ -446,6 +476,7 @@ def get_robot_capabilities() -> str:
             "set_head_position": {
                 "description": "Controls the orientation of the robot's head.",
                 "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)",
                     "yaw": "float (-1.0 to 1.0, left/right rotation)",
                     "pitch": "float (-1.0 to 1.0, up/down tilt)"
                 }
@@ -453,6 +484,7 @@ def get_robot_capabilities() -> str:
             "set_arm_position": {
                 "description": "Controls the position of one of the robot's arms.",
                 "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)",
                     "arm": "string ('left' or 'right')",
                     "shoulder_pitch": "float (0.0 to 2.0, forward/backward movement)",
                     "shoulder_roll": "float (-1.0 to 1.0, side-to-side movement)"
@@ -461,6 +493,7 @@ def get_robot_capabilities() -> str:
             "set_led_color": {
                 "description": "Sets the color of the robot's LEDs. All LEDs are set to the same color.",
                 "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)",
                     "color": "string (e.g., 'red', 'green', '#FF0000')",
                     "part": "string (currently only 'all' is supported)"
                 }
@@ -474,6 +507,7 @@ def get_robot_capabilities() -> str:
             "play_motion": {
                 "description": "Executes a pre-recorded motion file by its name.",
                 "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)",
                     "motion_name": "string (the name of the motion, e.g., 'HandWave')"
                 },
                 "returns": "object with 'status' (string) and 'duration_seconds' (float)"
@@ -482,10 +516,16 @@ def get_robot_capabilities() -> str:
         "System & State": {
             "reset_robot_pose": {
                 "description": "Resets the robot to a default standing position with arms down and head forward.",
+                "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)"
+                },
                 "returns": "string (confirmation message)"
             },
             "check_webots_connection": {
                 "description": "Verifies the communication link with the Webots simulator controller.",
+                "parameters": {
+                    "robot_name": "string (The name of the robot. You must pass the robot's name.)"
+                },
                 "returns": "object with connection details"
             }
         }
@@ -495,7 +535,12 @@ def get_robot_capabilities() -> str:
 
 @mcp.tool()
 def check_webots_connection(robot_name: str) -> str:
-    """Checks the connection with the Webots controller."""
+    """
+    Checks the connection with the Webots controller.
+
+    Args:
+        robot_name (str): The name of the robot. You must pass the robot's name.
+    """
     logger.info(f"Webots connection check for {robot_name} requested.")
     load_status(robot_name)
 
@@ -515,12 +560,23 @@ def check_webots_connection(robot_name: str) -> str:
     return json.dumps(connection_info, indent=2, ensure_ascii=False)
 
 @mcp.tool()
-def list_robots() -> List[str]:
-    """Lists all active robots."""
+def list_robots() -> List[Dict[str, Any]]:
+    """Lists all active robots with their coordinates."""
     logger.info("List of active robots requested.")
     if not ROOT_DATA_DIR.is_dir():
         return []
-    return [d.name for d in ROOT_DATA_DIR.iterdir() if d.is_dir()]
+
+    robots = []
+    for d in ROOT_DATA_DIR.iterdir():
+        if d.is_dir():
+            robot_name = d.name
+            load_status(robot_name)
+            robot_position = robot_status.get('robot_position', {'x': 0, 'y': 0, 'z': 0})
+            robots.append({
+                "name": robot_name,
+                "position": robot_position
+            })
+    return robots
 
 # Initialization on load
 logger.info("Initializing MCP server...")
