@@ -50,6 +50,7 @@ robot_status = {
         "left_shoulder_roll": 0.0,
         "right_shoulder_roll": 0.0
     },
+    "robot_position": {"x": 0, "y": 0, "z": 0},
     "last_recognized_objects": [],
     "last_update": 0,
     "last_image_timestamp": 0
@@ -146,6 +147,7 @@ def get_robot_status() -> str:
         "webots_connected": robot_status.get('webots_connected', False),
         "head_position": robot_status['head_position'],
         "arm_positions": robot_status['arm_positions'],
+        "robot_position": robot_status.get('robot_position', {'x': 0, 'y': 0, 'z': 0}),
         "last_recognized_objects": robot_status['last_recognized_objects'],
         "last_update": robot_status.get('last_update', 0),
         "last_image_timestamp": robot_status.get('last_image_timestamp', 0)
@@ -385,23 +387,80 @@ def set_led_color(color: str, part: str = 'all') -> str:
 
 @mcp.tool()
 def get_robot_capabilities() -> str:
-    """Gets a list of the robot's available capabilities."""
-    logger.info("List of robot capabilities requested.")
+    """Gets a detailed, structured list of the robot's available capabilities in English."""
+    logger.info("Detailed robot capabilities requested.")
     capabilities = {
-        "movement": {
-            "head_yaw": {"min": -1.0, "max": 1.0, "description": "Head rotation left-right"},
-            "head_pitch": {"min": -1.0, "max": 1.0, "description": "Head tilt up-down"},
-            "shoulder_pitch": {"min": 0.0, "max": 2.0, "description": "Arm up/down movement"},
-            "shoulder_roll": {"min": -1.0, "max": 1.0, "description": "Arm adduction/abduction"}
+        "Sensing": {
+            "get_visual_perception": {
+                "description": "Captures a high-resolution image from the robot's forward-facing camera. Returns a confirmation message with the path to the saved image file.",
+                "returns": "string (confirmation message)"
+            },
+            "get_robot_status": {
+                "description": "Retrieves a comprehensive status report of the robot's current state.",
+                "returns": {
+                    "running": "boolean (True if the controller is active)",
+                    "webots_connected": "boolean (True if the connection to the simulator is confirmed)",
+                    "head_position": {"yaw": "float", "pitch": "float"},
+                    "arm_positions": {
+                        "left_shoulder_pitch": "float",
+                        "right_shoulder_pitch": "float",
+                        "left_shoulder_roll": "float",
+                        "right_shoulder_roll": "float"
+                    },
+                    "robot_position": {"x": "float", "y": "float", "z": "float"},
+                    "last_update": "float (timestamp)"
+                }
+            }
         },
-        "sensors": {
-            "camera": {"description": "Webots camera"}
+        "Actuators": {
+            "set_head_position": {
+                "description": "Controls the orientation of the robot's head.",
+                "parameters": {
+                    "yaw": "float (-1.0 to 1.0, left/right rotation)",
+                    "pitch": "float (-1.0 to 1.0, up/down tilt)"
+                }
+            },
+            "set_arm_position": {
+                "description": "Controls the position of one of the robot's arms.",
+                "parameters": {
+                    "arm": "string ('left' or 'right')",
+                    "shoulder_pitch": "float (0.0 to 2.0, forward/backward movement)",
+                    "shoulder_roll": "float (-1.0 to 1.0, side-to-side movement)"
+                }
+            },
+            "set_led_color": {
+                "description": "Sets the color of the robot's LEDs. All LEDs are set to the same color.",
+                "parameters": {
+                    "color": "string (e.g., 'red', 'green', '#FF0000')",
+                    "part": "string (currently only 'all' is supported)"
+                }
+            }
         },
-        "actions": {
-            "pose_reset": {"description": "Reset to initial position"}
+        "Pre-defined Motions": {
+            "list_motions": {
+                "description": "Lists all available pre-recorded motion files that the robot can perform.",
+                "returns": "array of objects, each with 'name' (string) and 'duration_seconds' (float)"
+            },
+            "play_motion": {
+                "description": "Executes a pre-recorded motion file by its name.",
+                "parameters": {
+                    "motion_name": "string (the name of the motion, e.g., 'HandWave')"
+                },
+                "returns": "object with 'status' (string) and 'duration_seconds' (float)"
+            }
+        },
+        "System & State": {
+            "reset_robot_pose": {
+                "description": "Resets the robot to a default standing position with arms down and head forward.",
+                "returns": "string (confirmation message)"
+            },
+            "check_webots_connection": {
+                "description": "Verifies the communication link with the Webots simulator controller.",
+                "returns": "object with connection details"
+            }
         }
     }
-    logger.info("List of robot capabilities successfully generated.")
+    logger.info("Detailed robot capabilities list successfully generated.")
     return json.dumps(capabilities, indent=2, ensure_ascii=False)
 
 @mcp.tool()
