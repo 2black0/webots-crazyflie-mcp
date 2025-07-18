@@ -212,30 +212,91 @@ def reset_robot_pose() -> str:
         return "❌ Ошибка отправки команды сброса"
 
 @mcp.tool()
-def list_motions() -> List[str]:
-    """Возвращает список доступных движений."""
+def list_motions() -> List[Dict[str, Any]]:
+    """
+    Возвращает список доступных движений с их продолжительностью.
+    """
     motions_dir = Path(__file__).parent / "motions"
     if not motions_dir.is_dir():
-        return ["❌ Директория motions не найдена"]
-    
-    motion_files = [f.stem for f in motions_dir.glob("*.motion")]
+        return [{"error": "Директория motions не найдена"}]
+
+    motion_details = []
+    motion_files = list(motions_dir.glob("*.motion"))
+
     if not motion_files:
-        return ["ℹ️ Файлы .motion не найдены в директории motions"]
+        return [{"info": "Файлы .motion не найдены в директории motions"}]
+
+    for motion_file in motion_files:
+        duration_seconds = 0.0
+        try:
+            with open(motion_file, 'r', encoding='utf-8') as f:
+                lines = [line for line in f if line.strip() and not line.strip().startswith('#')]
+                if lines:
+                    last_line = lines[-1]
+                    time_str = last_line.split(',')[0]
+                    time_parts = time_str.split(':')
+                    duration_ms = (int(time_parts[0]) * 3600000 +
+                                   int(time_parts[1]) * 60000 +
+                                   int(time_parts[2]) * 1000 +
+                                   int(time_parts[3]))
+                    duration_seconds = round(duration_ms / 1000.0, 2)
+        except (IOError, ValueError, IndexError) as e:
+            print(f"Не удалось прочитать длительность для {motion_file.name}: {e}")
+            duration_seconds = 0.0 # Indicate error or unknown duration
+
+        motion_details.append({
+            "name": motion_file.stem,
+            "duration_seconds": duration_seconds
+        })
         
-    return motion_files
+    return motion_details
 
 @mcp.tool()
-def play_motion(motion_name: str) -> str:
-    """Запускает движение робота."""
+def play_motion(motion_name: str) -> Dict[str, Any]:
+    """
+    Запускает движение робота и возвращает его продолжительность.
+    """
+    motions_dir = Path(__file__).parent / "motions"
+    
+    # Очищаем имя от расширения, если оно есть
+    base_motion_name = motion_name.split('.')[0]
+    motion_file = motions_dir / f"{base_motion_name}.motion"
+
+    if not motion_file.exists():
+        return {"status": f"❌ Файл анимации '{motion_name}' не найден.", "duration_seconds": 0}
+
+    duration_seconds = 0.0
+    try:
+        with open(motion_file, 'r', encoding='utf-8') as f:
+            lines = [line for line in f if line.strip() and not line.strip().startswith('#')]
+            if lines:
+                last_line = lines[-1]
+                time_str = last_line.split(',')[0]
+                time_parts = time_str.split(':')
+                duration_ms = (int(time_parts[0]) * 3600000 +
+                               int(time_parts[1]) * 60000 +
+                               int(time_parts[2]) * 1000 +
+                               int(time_parts[3]))
+                duration_seconds = round(duration_ms / 1000.0, 2)
+    except (IOError, ValueError, IndexError) as e:
+        print(f"Не удалось прочитать длительность для {motion_file.name}: {e}")
+        return {"status": f"⚠️ Не удалось определить длительность для '{motion_name}'.", "duration_seconds": 0}
+
     command = {
         "action": "play_motion",
         "motion_name": motion_name
     }
 
     if save_command(command):
-        return f"✅ Команда на воспроизведение анимации '{motion_name}' отправлена."
+        return {
+            "status": f"✅ Команда на воспроизведение анимации '{motion_name}' отправлена.",
+            "duration_seconds": duration_seconds
+        }
     else:
-        return f"❌ Ошибка отправки команды на воспроизведение анимации '{motion_name}'."
+        return {
+            "status": f"❌ Ошибка отправки команды на воспроизведение анимации '{motion_name}'.",
+            "duration_seconds": 0
+        }
 
 
 @mcp.tool()
