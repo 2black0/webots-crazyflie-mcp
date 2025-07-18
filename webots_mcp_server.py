@@ -417,7 +417,7 @@ def set_led_color(robot_name: str, color: str, part: str = 'all') -> str:
 
 @mcp.tool()
 def get_robot_capabilities() -> str:
-    """Gets a detailed, structured list of the robot's available capabilities in English."""
+    """Gets a detailed, structured list of the robot's available capabilities."""
     logger.info("Detailed robot capabilities requested.")
     capabilities = {
         "Sensing": {

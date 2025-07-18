@@ -5,10 +5,10 @@ import time
 import sys
 
 # --- Configuration ---
+ROBOT_NAME = "NAO"
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-COMMANDS_FILE = os.path.join(DATA_DIR, 'commands.json')
-STATUS_FILE = os.path.join(DATA_DIR, 'status.json')
-SERVER_SCRIPT = 'webots_mcp_server.py'
+COMMANDS_FILE = os.path.join(DATA_DIR, ROBOT_NAME, 'commands.json')
+STATUS_FILE = os.path.join(DATA_DIR, ROBOT_NAME, 'status.json')
 
 # --- Helper Functions ---
 def write_command(command: dict):
@@ -40,14 +40,6 @@ def run_test():
     """
     server_process = None
     try:
-        # 1. Start the server as a background process
-        print(f"[CLIENT] Starting {SERVER_SCRIPT}...")
-        server_process = subprocess.Popen([sys.executable, SERVER_SCRIPT])
-        print(f"[CLIENT] Server process started with PID: {server_process.pid}")
-        
-        # Give the server a moment to initialize
-        time.sleep(5)
-
         # 2. Test: Get robot status
         print("\n[TEST 1] Getting robot status...")
         if not write_command({'action': 'get_robot_status'}):

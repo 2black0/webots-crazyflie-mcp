@@ -10,4 +10,4 @@ consoles: Console:All:All
 renderingDevicePerspectives: NAO(1):CameraBottom;1;1;0;0
 renderingDevicePerspectives: NAO(1):CameraTop;1;1;0;0
 renderingDevicePerspectives: NAO:CameraBottom;0;0.329167;0;0
-renderingDevicePerspectives: NAO:CameraTop;1;0.45;0;0
+renderingDevicePerspectives: NAO:CameraTop;1;0.252083;0;0.275938
