@@ -146,6 +146,17 @@ In this session, we successfully added the ability to track the robot's position
     *   A check for the presence and correctness of the `robot_position` field in the received status was added to the script.
 4.  **Successful Verification:** The final run of `mcp_test_runner.py` confirmed that the controller correctly determines and transmits the coordinates, and the test script successfully receives and displays them.
 
+## Session 12: Adding a Dedicated Tool for Coordinates
+
+In this session, we added a new, more focused tool to the MCP server for retrieving the robot's position.
+
+### Key Achievements:
+
+1.  **New Tool Creation:** A new `get_robot_position` tool was added to `webots_mcp_server.py`.
+2.  **Rationale:** This tool was created to simplify interactions where only the robot's coordinates are needed, avoiding the larger data structure returned by `get_robot_status`.
+3.  **Implementation:** The new tool reuses the existing `load_status` function and returns only the `robot_position` part of the status object.
+4.  **Server Restart:** The server needs to be restarted for the new tool to become available.
+
 ## Current Status:
 
 *   **System is fully functional:** All main tools (`get_visual_perception`, `play_motion`, `list_motions`, `set_led_color`, `get_robot_status` with coordinates) are working correctly.

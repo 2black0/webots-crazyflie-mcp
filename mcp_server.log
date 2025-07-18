@@ -260,3 +260,216 @@
 2025-07-18 17:08:56,608 - __main__ - INFO - Robot status successfully generated.
 2025-07-18 17:14:42,715 - __main__ - INFO - Initializing MCP server...
 2025-07-18 17:14:42,716 - __main__ - INFO - Starting MCP server.
+2025-07-18 17:39:38,641 - __main__ - INFO - Initializing MCP server...
+2025-07-18 17:39:38,642 - __main__ - INFO - Starting MCP server.
+2025-07-18 17:39:38,671 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-07-18 17:43:16,761 - __main__ - INFO - Initializing MCP server...
+2025-07-18 17:43:16,763 - __main__ - INFO - Starting MCP server.
+2025-07-18 17:51:02,616 - __main__ - INFO - Initializing MCP server...
+2025-07-18 17:51:02,617 - __main__ - INFO - Starting MCP server.
+2025-07-18 17:51:49,247 - __main__ - INFO - Initializing MCP server...
+2025-07-18 17:51:49,289 - __main__ - INFO - Starting MCP server.
+2025-07-18 17:51:49,307 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-07-18 17:52:40,847 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:52:40,847 - __main__ - INFO - Detailed robot capabilities requested.
+2025-07-18 17:52:40,847 - __main__ - INFO - Detailed robot capabilities list successfully generated.
+2025-07-18 17:54:42,278 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:54:42,279 - __main__ - INFO - Robot status requested.
+2025-07-18 17:54:42,282 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:55:05,946 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:55:05,946 - __main__ - INFO - Animation playback requested: TurnLeft60.motion
+2025-07-18 17:55:05,956 - __main__ - INFO - Animation duration for 'TurnLeft60.motion' determined: 4.52s
+2025-07-18 17:55:05,956 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:55:37,562 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:55:37,563 - __main__ - INFO - Animation playback requested: Forwards.motion
+2025-07-18 17:55:37,565 - __main__ - INFO - Animation duration for 'Forwards.motion' determined: 2.6s
+2025-07-18 17:55:37,567 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:55:48,732 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:55:48,733 - __main__ - INFO - Robot status requested.
+2025-07-18 17:55:48,735 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:56:04,601 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:56:04,604 - __main__ - INFO - Animation playback requested: TurnLeft40.motion
+2025-07-18 17:56:04,608 - __main__ - INFO - Animation duration for 'TurnLeft40.motion' determined: 2.88s
+2025-07-18 17:56:04,616 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:56:18,695 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:56:18,697 - __main__ - INFO - Animation playback requested: Forwards.motion
+2025-07-18 17:56:18,699 - __main__ - INFO - Animation duration for 'Forwards.motion' determined: 2.6s
+2025-07-18 17:56:18,701 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:56:30,866 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:56:30,866 - __main__ - INFO - Robot status requested.
+2025-07-18 17:56:30,868 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:56:41,756 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:56:41,757 - __main__ - INFO - Animation playback requested: TurnLeft40.motion
+2025-07-18 17:56:41,758 - __main__ - INFO - Animation duration for 'TurnLeft40.motion' determined: 2.88s
+2025-07-18 17:56:41,761 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:56:52,188 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:56:52,188 - __main__ - INFO - Animation playback requested: Forwards.motion
+2025-07-18 17:56:52,190 - __main__ - INFO - Animation duration for 'Forwards.motion' determined: 2.6s
+2025-07-18 17:56:52,196 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:57:01,346 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:57:01,346 - __main__ - INFO - Robot status requested.
+2025-07-18 17:57:01,346 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:57:26,896 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:57:26,896 - __main__ - INFO - Animation playback requested: TurnRight40.motion
+2025-07-18 17:57:26,906 - __main__ - INFO - Animation duration for 'TurnRight40.motion' determined: 2.84s
+2025-07-18 17:57:26,906 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:57:44,936 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:57:44,936 - __main__ - INFO - Animation playback requested: Forwards50.motion
+2025-07-18 17:57:44,936 - __main__ - INFO - Animation duration for 'Forwards50.motion' determined: 6.76s
+2025-07-18 17:57:44,936 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:58:01,486 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:58:01,486 - __main__ - INFO - Robot status requested.
+2025-07-18 17:58:01,486 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:58:23,246 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:58:23,246 - __main__ - INFO - Animation playback requested: TurnRight40.motion
+2025-07-18 17:58:23,256 - __main__ - INFO - Animation duration for 'TurnRight40.motion' determined: 2.84s
+2025-07-18 17:58:23,261 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:58:36,385 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:58:36,385 - __main__ - INFO - Animation playback requested: Forwards50.motion
+2025-07-18 17:58:36,385 - __main__ - INFO - Animation duration for 'Forwards50.motion' determined: 6.76s
+2025-07-18 17:58:36,401 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:58:54,394 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:58:54,394 - __main__ - INFO - Robot status requested.
+2025-07-18 17:58:54,395 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 17:59:19,246 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:59:19,246 - __main__ - INFO - Animation playback requested: TurnRight40.motion
+2025-07-18 17:59:19,246 - __main__ - INFO - Animation duration for 'TurnRight40.motion' determined: 2.84s
+2025-07-18 17:59:19,255 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:59:31,815 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:59:31,815 - __main__ - INFO - Animation playback requested: Forwards50.motion
+2025-07-18 17:59:31,822 - __main__ - INFO - Animation duration for 'Forwards50.motion' determined: 6.76s
+2025-07-18 17:59:31,825 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 17:59:50,432 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 17:59:50,434 - __main__ - INFO - Robot status requested.
+2025-07-18 17:59:50,437 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 18:00:05,589 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:00:05,590 - __main__ - INFO - Animation playback requested: TurnRight40.motion
+2025-07-18 18:00:05,591 - __main__ - INFO - Animation duration for 'TurnRight40.motion' determined: 2.84s
+2025-07-18 18:00:05,593 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:00:16,045 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:00:16,045 - __main__ - INFO - Animation playback requested: Forwards50.motion
+2025-07-18 18:00:16,045 - __main__ - INFO - Animation duration for 'Forwards50.motion' determined: 6.76s
+2025-07-18 18:00:16,045 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:00:33,285 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:00:33,286 - __main__ - INFO - Robot status requested.
+2025-07-18 18:00:33,288 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 18:00:43,835 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:00:43,835 - __main__ - INFO - Animation playback requested: Forwards.motion
+2025-07-18 18:00:43,845 - __main__ - INFO - Animation duration for 'Forwards.motion' determined: 2.6s
+2025-07-18 18:00:43,845 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:00:55,663 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:00:55,664 - __main__ - INFO - Robot status requested.
+2025-07-18 18:00:55,668 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 18:01:55,052 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:01:55,053 - __main__ - INFO - Animation playback requested: Forwards50.motion
+2025-07-18 18:01:55,054 - __main__ - INFO - Animation duration for 'Forwards50.motion' determined: 6.76s
+2025-07-18 18:01:55,057 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:02:20,778 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:02:20,779 - __main__ - INFO - Robot status requested.
+2025-07-18 18:02:20,781 - __main__ - INFO - Robot status successfully generated.
+2025-07-18 18:08:08,023 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:08:08,023 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:08:08,083 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-07-18 18:09:01,625 - __main__ - INFO - Initializing MCP server...
+2025-07-18 18:09:01,626 - __main__ - INFO - Starting MCP server.
+2025-07-18 18:10:47,495 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:10:47,506 - __main__ - INFO - Robot position requested.
+2025-07-18 18:10:47,514 - __main__ - INFO - Robot position successfully retrieved.
+2025-07-18 18:10:52,778 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:10:52,783 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:10:52,787 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:10:52,789 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:10:57,872 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:10:57,883 - __main__ - INFO - Robot position requested.
+2025-07-18 18:10:57,883 - __main__ - INFO - Robot position successfully retrieved.
+2025-07-18 18:11:10,168 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:10,168 - __main__ - INFO - Animation playback requested: TurnLeft60
+2025-07-18 18:11:10,173 - __main__ - INFO - Animation duration for 'TurnLeft60' determined: 4.52s
+2025-07-18 18:11:10,175 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:12,052 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:12,057 - __main__ - INFO - Animation playback requested: TurnLeft60
+2025-07-18 18:11:12,057 - __main__ - INFO - Animation duration for 'TurnLeft60' determined: 4.52s
+2025-07-18 18:11:12,063 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:19,552 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:19,552 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:19,552 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:19,557 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:19,634 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:19,634 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:19,634 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:19,642 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:19,645 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:19,645 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:19,652 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:19,652 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:19,663 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:19,663 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:19,663 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:19,663 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:19,679 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:19,679 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:19,679 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:19,682 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:21,672 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:21,672 - __main__ - INFO - Robot position requested.
+2025-07-18 18:11:21,672 - __main__ - INFO - Robot position successfully retrieved.
+2025-07-18 18:11:24,122 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:24,128 - __main__ - INFO - Animation playback requested: SideStepLeft
+2025-07-18 18:11:24,128 - __main__ - INFO - Animation duration for 'SideStepLeft' determined: 4.92s
+2025-07-18 18:11:24,128 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:26,162 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:26,162 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:26,162 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:26,172 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:28,852 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:28,852 - __main__ - INFO - Robot position requested.
+2025-07-18 18:11:28,852 - __main__ - INFO - Robot position successfully retrieved.
+2025-07-18 18:11:31,542 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:31,542 - __main__ - INFO - Animation playback requested: TurnLeft180
+2025-07-18 18:11:31,552 - __main__ - INFO - Animation duration for 'TurnLeft180' determined: 9.0s
+2025-07-18 18:11:31,552 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:33,345 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:33,345 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:33,346 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:33,350 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:35,147 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:35,147 - __main__ - INFO - Robot position requested.
+2025-07-18 18:11:35,147 - __main__ - ERROR - Error loading status: Expecting value: line 1 column 1 (char 0)
+2025-07-18 18:11:35,147 - __main__ - INFO - Robot position successfully retrieved.
+2025-07-18 18:11:44,932 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:44,932 - __main__ - INFO - Visual information requested.
+2025-07-18 18:11:44,932 - __main__ - INFO - Command 'get_camera_image' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:44,932 - __main__ - INFO - Waiting for image update. Initial time: 0
+2025-07-18 18:11:45,039 - __main__ - INFO - Image update detected.
+2025-07-18 18:11:45,042 - __main__ - INFO - Image successfully received: D:\webots-mcp\data\camera_image.jpg
+2025-07-18 18:11:47,777 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:47,777 - __main__ - INFO - Animation playback requested: TurnRight40
+2025-07-18 18:11:47,777 - __main__ - INFO - Animation duration for 'TurnRight40' determined: 2.84s
+2025-07-18 18:11:47,777 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:50,595 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:50,596 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:50,598 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:50,600 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:52,541 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:52,542 - __main__ - INFO - Robot position requested.
+2025-07-18 18:11:52,545 - __main__ - INFO - Robot position successfully retrieved.
+2025-07-18 18:11:56,337 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:56,337 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:56,338 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:56,343 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:56,489 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:56,490 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:56,491 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:56,497 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:56,507 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:56,508 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:56,511 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:56,516 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:56,528 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:56,529 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:56,532 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:56,534 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json
+2025-07-18 18:11:56,543 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-07-18 18:11:56,545 - __main__ - INFO - Animation playback requested: Forwards
+2025-07-18 18:11:56,546 - __main__ - INFO - Animation duration for 'Forwards' determined: 2.6s
+2025-07-18 18:11:56,548 - __main__ - INFO - Command 'play_motion' saved successfully to D:\webots-mcp\data\commands.json

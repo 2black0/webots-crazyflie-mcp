@@ -130,6 +130,17 @@ def get_visual_perception() -> str:
     return f"✅ Image received for analysis: {image_path.resolve()}"
 
 @mcp.tool()
+def get_robot_position() -> str:
+    """Gets the current position of the robot."""
+    logger.info("Robot position requested.")
+    load_status()
+    
+    robot_position = robot_status.get('robot_position', {'x': 0, 'y': 0, 'z': 0})
+    
+    logger.info("Robot position successfully retrieved.")
+    return json.dumps(robot_position, indent=2, ensure_ascii=False)
+
+@mcp.tool()
 def get_robot_status() -> str:
     """Gets the current status of the robot."""
     logger.info("Robot status requested.")
