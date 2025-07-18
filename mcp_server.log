@@ -1,0 +1,3 @@
+2025-07-18 13:01:54,860 - __main__ - INFO - Инициализация MCP сервера...
+2025-07-18 13:01:54,862 - __main__ - INFO - Запуск MCP сервера.
+2025-07-18 13:01:54,906 - root - WARNING - Failed to validate request: Received request before initialization was complete
