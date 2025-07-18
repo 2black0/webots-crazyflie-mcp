@@ -32,12 +32,22 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP("Webots Robot Control Server")
 
 # Paths for data exchange with the controller
-DATA_DIR = Path(__file__).parent / "data"
-COMMANDS_FILE = DATA_DIR / "commands.json"
-STATUS_FILE = DATA_DIR / "status.json"
+ROOT_DATA_DIR = Path(__file__).parent / "data"
 
-# Create the data directory
-DATA_DIR.mkdir(exist_ok=True)
+def get_robot_data_dir(robot_name: str) -> Path:
+    """Returns the data directory for a given robot."""
+    return ROOT_DATA_DIR / robot_name
+
+def get_commands_file(robot_name: str) -> Path:
+    """Returns the commands file path for a given robot."""
+    return get_robot_data_dir(robot_name) / "commands.json"
+
+def get_status_file(robot_name: str) -> Path:
+    """Returns the status file path for a given robot."""
+    return get_robot_data_dir(robot_name) / "status.json"
+
+# Create the root data directory
+ROOT_DATA_DIR.mkdir(exist_ok=True)
 
 # Global variables for state
 robot_status = {
@@ -56,101 +66,105 @@ robot_status = {
     "last_image_timestamp": 0
 }
 
-def load_status():
+def load_status(robot_name: str):
     """Loads the status from the file."""
     global robot_status
+    status_file = get_status_file(robot_name)
     try:
-        if STATUS_FILE.exists():
-            with open(STATUS_FILE, 'r', encoding='utf-8') as f:
+        if status_file.exists():
+            with open(status_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 robot_status.update(data)
-                logger.debug("Status loaded successfully.")
+                logger.debug(f"Status for {robot_name} loaded successfully.")
                 return True
     except Exception as e:
-        logger.error(f"Error loading status: {e}")
+        logger.error(f"Error loading status for {robot_name}: {e}")
     return False
 
-def save_command(command: dict):
+def save_command(robot_name: str, command: dict):
     """Saves a command to a file for the controller."""
+    commands_file = get_commands_file(robot_name)
     try:
         command['timestamp'] = time.time()
         # Make sure the directory exists
-        COMMANDS_FILE.parent.mkdir(parents=True, exist_ok=True)
-        with open(COMMANDS_FILE, 'w', encoding='utf-8') as f:
+        commands_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(commands_file, 'w', encoding='utf-8') as f:
             json.dump(command, f, indent=2, ensure_ascii=False)
-        logger.info(f"Command '{command.get('action')}' saved successfully to {COMMANDS_FILE.resolve()}")
+        logger.info(f"Command '{command.get('action')}' for {robot_name} saved successfully to {commands_file.resolve()}")
         return True
     except Exception as e:
-        logger.error(f"Error saving command to {COMMANDS_FILE.resolve()}: {e}")
+        logger.error(f"Error saving command for {robot_name} to {commands_file.resolve()}: {e}")
         return False
 
 
 
-def wait_for_image_update(timeout=10.0):
+def wait_for_image_update(robot_name: str, timeout=10.0):
     """Waits for an image update from the controller."""
     start_time = time.time()
     initial_image_time = robot_status.get('last_image_timestamp', 0)
-    logger.info(f"Waiting for image update. Initial time: {initial_image_time}")
+    logger.info(f"Waiting for image update for {robot_name}. Initial time: {initial_image_time}")
 
     while time.time() - start_time < timeout:
-        load_status()
+        load_status(robot_name)
         if robot_status.get('last_image_timestamp', 0) > initial_image_time:
-            logger.info("Image update detected.")
+            logger.info(f"Image update for {robot_name} detected.")
             return True
         time.sleep(0.1)
-    logger.warning("Timeout waiting for image update.")
+    logger.warning(f"Timeout waiting for image update for {robot_name}.")
     return False
 
 
 @mcp.tool()
-def get_visual_perception() -> str:
+def get_visual_perception(robot_name: str) -> str:
     """
     Gets visual information from the robot's camera in jpg format.
 
+    Args:
+        robot_name (str): The name of the robot to get the image from.
     """
-    logger.info("Visual information requested.")
+    logger.info(f"Visual information for {robot_name} requested.")
     command = {
         "action": "get_camera_image"
     }
 
-    if not save_command(command):
-        logger.error("Error sending command to get image.")
-        return "❌ Error sending command to get image"
+    if not save_command(robot_name, command):
+        logger.error(f"Error sending command to get image for {robot_name}.")
+        return f"❌ Error sending command to get image for {robot_name}"
 
-    if not wait_for_image_update():
-        logger.warning("Command to get image sent, but new image not received within timeout.")
-        return "⚠️ Command sent, but new image not received"
+    if not wait_for_image_update(robot_name):
+        logger.warning(f"Command to get image for {robot_name} sent, but new image not received within timeout.")
+        return f"⚠️ Command sent for {robot_name}, but new image not received"
 
-    image_path = DATA_DIR / "camera_image.jpg"
+    image_path = get_robot_data_dir(robot_name) / "camera_image.jpg"
     if not image_path.exists():
-        logger.error(f"Image file not found at path: {image_path.resolve()}")
-        return "❌ Image file not found after update"
+        logger.error(f"Image file for {robot_name} not found at path: {image_path.resolve()}")
+        return f"❌ Image file for {robot_name} not found after update"
 
-    logger.info(f"Image successfully received: {image_path.resolve()}")
-    return f"✅ Image received for analysis: {image_path.resolve()}"
+    logger.info(f"Image for {robot_name} successfully received: {image_path.resolve()}")
+    return f"✅ Image for {robot_name} received for analysis: {image_path.resolve()}"
 
 @mcp.tool()
-def get_robot_position() -> str:
+def get_robot_position(robot_name: str) -> str:
     """Gets the current position of the robot."""
-    logger.info("Robot position requested.")
-    load_status()
+    logger.info(f"Robot position for {robot_name} requested.")
+    load_status(robot_name)
     
     robot_position = robot_status.get('robot_position', {'x': 0, 'y': 0, 'z': 0})
     
-    logger.info("Robot position successfully retrieved.")
+    logger.info(f"Robot position for {robot_name} successfully retrieved.")
     return json.dumps(robot_position, indent=2, ensure_ascii=False)
 
 @mcp.tool()
-def get_robot_status() -> str:
+def get_robot_status(robot_name: str) -> str:
     """Gets the current status of the robot."""
-    logger.info("Robot status requested.")
-    load_status()
+    logger.info(f"Robot status for {robot_name} requested.")
+    load_status(robot_name)
 
     # Check if the status was updated recently (last 10 seconds)
     current_time = time.time()
     last_update = robot_status.get('last_update', 0)
     robot_status['running'] = (current_time - last_update) < 10.0
-    logger.debug(f"Activity check: running={robot_status['running']} (last_update: {last_update})")
+    logger.debug(f"Activity check for {robot_name}: running={robot_status['running']} (last_update: {last_update})")
 
 
     status_info = {
@@ -163,19 +177,20 @@ def get_robot_status() -> str:
         "last_update": robot_status.get('last_update', 0),
         "last_image_timestamp": robot_status.get('last_image_timestamp', 0)
     }
-    logger.info("Robot status successfully generated.")
+    logger.info(f"Robot status for {robot_name} successfully generated.")
     return json.dumps(status_info, indent=2, ensure_ascii=False)
 
 @mcp.tool()
-def set_head_position(yaw: float, pitch: float) -> str:
+def set_head_position(robot_name: str, yaw: float, pitch: float) -> str:
     """
     Sets the position of the robot's head.
 
     Args:
+        robot_name (str): The name of the robot.
         yaw: Head rotation left-right (-1.0 to 1.0)
         pitch: Head tilt up-down (-1.0 to 1.0)
     """
-    logger.info(f"Setting head position: yaw={yaw}, pitch={pitch}")
+    logger.info(f"Setting head position for {robot_name}: yaw={yaw}, pitch={pitch}")
     # Limit the values
     yaw = max(-1.0, min(1.0, yaw))
     pitch = max(-1.0, min(1.0, pitch))
@@ -186,27 +201,28 @@ def set_head_position(yaw: float, pitch: float) -> str:
         "pitch": pitch
     }
 
-    if save_command(command):
+    if save_command(robot_name, command):
         # Update local state
         robot_status["head_position"]["yaw"] = yaw
         robot_status["head_position"]["pitch"] = pitch
-        logger.info(f"Local head status updated: yaw={yaw:.2f}, pitch={pitch:.2f}")
-        return f"✅ Head position set: yaw={yaw:.2f}, pitch={pitch:.2f}"
+        logger.info(f"Local head status for {robot_name} updated: yaw={yaw:.2f}, pitch={pitch:.2f}")
+        return f"✅ Head position for {robot_name} set: yaw={yaw:.2f}, pitch={pitch:.2f}"
     else:
-        logger.error("Error sending command to set head position.")
+        logger.error(f"Error sending command to set head position for {robot_name}.")
         return "❌ Error sending command"
 
 @mcp.tool()
-def set_arm_position(arm: str, shoulder_pitch: float, shoulder_roll: float) -> str:
+def set_arm_position(robot_name: str, arm: str, shoulder_pitch: float, shoulder_roll: float) -> str:
     """
     Sets the position of the robot's arm.
 
     Args:
+        robot_name (str): The name of the robot.
         arm: 'left' or 'right'
         shoulder_pitch: Arm up/down movement (0.0 to 2.0)
         shoulder_roll: Arm adduction/abduction (-1.0 to 1.0)
     """
-    logger.info(f"Setting arm position '{arm}': pitch={shoulder_pitch}, roll={shoulder_roll}")
+    logger.info(f"Setting arm position for {robot_name} '{arm}': pitch={shoulder_pitch}, roll={shoulder_roll}")
     if arm not in ["left", "right"]:
         logger.warning(f"Invalid value for 'arm': {arm}. Must be 'left' or 'right'.")
         return "❌ Invalid arm value. Use 'left' or 'right'"
@@ -222,25 +238,25 @@ def set_arm_position(arm: str, shoulder_pitch: float, shoulder_roll: float) -> s
         "shoulder_roll": shoulder_roll
     }
 
-    if save_command(command):
+    if save_command(robot_name, command):
         # Update local state
         robot_status["arm_positions"][f"{arm}_shoulder_pitch"] = shoulder_pitch
         robot_status["arm_positions"][f"{arm}_shoulder_roll"] = shoulder_roll
-        logger.info(f"Local arm status '{arm}' updated: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}")
-        return f"✅ {arm} arm position set: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
+        logger.info(f"Local arm status for {robot_name} '{arm}' updated: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}")
+        return f"✅ {arm} arm position for {robot_name} set: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
     else:
-        logger.error(f"Error sending command to set '{arm}' arm position.")
+        logger.error(f"Error sending command to set '{arm}' arm position for {robot_name}.")
         return "❌ Error sending command"
 
 @mcp.tool()
-def reset_robot_pose() -> str:
+def reset_robot_pose(robot_name: str) -> str:
     """Resets the robot to its initial position."""
-    logger.info("Robot pose reset requested.")
+    logger.info(f"Robot pose reset for {robot_name} requested.")
     command = {
         "action": "reset_pose"
     }
 
-    if save_command(command):
+    if save_command(robot_name, command):
         # Update local state
         robot_status["head_position"]["yaw"] = 0.0
         robot_status["head_position"]["pitch"] = 0.0
@@ -248,10 +264,10 @@ def reset_robot_pose() -> str:
         robot_status["arm_positions"]["right_shoulder_pitch"] = 1.5
         robot_status["arm_positions"]["left_shoulder_roll"] = 0.0
         robot_status["arm_positions"]["right_shoulder_roll"] = 0.0
-        logger.info("Local status reset to initial position.")
-        return "✅ Robot reset to initial position: head straight, arms down"
+        logger.info(f"Local status for {robot_name} reset to initial position.")
+        return f"✅ Robot {robot_name} reset to initial position: head straight, arms down"
     else:
-        logger.error("Error sending pose reset command.")
+        logger.error(f"Error sending pose reset command for {robot_name}.")
         return "❌ Error sending reset command"
 
 @mcp.tool()
@@ -304,11 +320,11 @@ import time
 
 
 @mcp.tool()
-def play_motion(motion_name: str) -> Dict[str, Any]:
+def play_motion(robot_name: str, motion_name: str) -> Dict[str, Any]:
     """
     Starts a robot motion, WAITS for it to complete, and then returns.
     """
-    logger.info(f"Animation playback requested: {motion_name}")
+    logger.info(f"Animation playback for {robot_name} requested: {motion_name}")
     motions_dir = Path(__file__).parent / "motions"
 
     base_motion_name = motion_name.split('.')[0]
@@ -340,32 +356,33 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
         "motion_name": motion_name
     }
 
-    if save_command(command):
-        logger.info(f"Command to play '{motion_name}' sent. Waiting for {duration_seconds:.2f} seconds...")
+    if save_command(robot_name, command):
+        logger.info(f"Command to play '{motion_name}' for {robot_name} sent. Waiting for {duration_seconds:.2f} seconds...")
         time.sleep(duration_seconds+2)
-        logger.info(f"Motion '{motion_name}' finished.")
+        logger.info(f"Motion '{motion_name}' for {robot_name} finished.")
 
         return {
-            "status": f"✅ Motion '{motion_name}' completed successfully.",
+            "status": f"✅ Motion '{motion_name}' for {robot_name} completed successfully.",
             "duration_seconds": duration_seconds
         }
     else:
-        logger.error(f"Error sending command to play animation '{motion_name}'.")
+        logger.error(f"Error sending command to play animation '{motion_name}' for {robot_name}.")
         return {
-            "status": f"❌ Error sending command to play animation '{motion_name}'.",
+            "status": f"❌ Error sending command to play animation '{motion_name}' for {robot_name}.",
             "duration_seconds": 0
         }
 
 @mcp.tool()
-def set_led_color(color: str, part: str = 'all') -> str:
+def set_led_color(robot_name: str, color: str, part: str = 'all') -> str:
     """
     Sets the color of the robot's LEDs.
 
     Args:
+        robot_name (str): The name of the robot.
         color: Color name ('red', 'green', 'blue', 'white', 'off') or HEX code (e.g., '#FF0000').
         part: Body part to light up (currently only 'all' is supported).
     """
-    logger.info(f"Setting LED color: color='{color}', part='{part}'")
+    logger.info(f"Setting LED color for {robot_name}: color='{color}', part='{part}'")
     color_map = {
         "red": 0xFF0000,
         "green": 0x00FF00,
@@ -391,11 +408,11 @@ def set_led_color(color: str, part: str = 'all') -> str:
         "color": rgb_color
     }
 
-    if save_command(command):
-        return f"✅ Command to set color '{color}' sent."
+    if save_command(robot_name, command):
+        return f"✅ Command to set color '{color}' for {robot_name} sent."
     else:
-        logger.error("Error sending command to set color.")
-        return f"❌ Error sending command to set color."
+        logger.error(f"Error sending command to set color for {robot_name}.")
+        return f"❌ Error sending command to set color for {robot_name}."
 
 
 @mcp.tool()
@@ -477,10 +494,10 @@ def get_robot_capabilities() -> str:
     return json.dumps(capabilities, indent=2, ensure_ascii=False)
 
 @mcp.tool()
-def check_webots_connection() -> str:
+def check_webots_connection(robot_name: str) -> str:
     """Checks the connection with the Webots controller."""
-    logger.info("Webots connection check requested.")
-    load_status()
+    logger.info(f"Webots connection check for {robot_name} requested.")
+    load_status(robot_name)
 
     current_time = time.time()
     last_update = robot_status.get('last_update', 0)
@@ -490,16 +507,23 @@ def check_webots_connection() -> str:
         "connected": True,
         "last_update": last_update,
         "time_since_update": current_time - last_update,
-        "commands_file_exists": COMMANDS_FILE.exists(),
-        "status_file_exists": STATUS_FILE.exists(),
+        "commands_file_exists": get_commands_file(robot_name).exists(),
+        "status_file_exists": get_status_file(robot_name).exists(),
         "webots_reported_status": robot_status.get('webots_connected', False)
     }
-    logger.info(f"Connection status: {connection_info}")
+    logger.info(f"Connection status for {robot_name}: {connection_info}")
     return json.dumps(connection_info, indent=2, ensure_ascii=False)
+
+@mcp.tool()
+def list_robots() -> List[str]:
+    """Lists all active robots."""
+    logger.info("List of active robots requested.")
+    if not ROOT_DATA_DIR.is_dir():
+        return []
+    return [d.name for d in ROOT_DATA_DIR.iterdir() if d.is_dir()]
 
 # Initialization on load
 logger.info("Initializing MCP server...")
-load_status()
 
 if __name__ == "__main__":
     logger.info("Starting MCP server.")

@@ -19,14 +19,18 @@ from pathlib import Path
 from controller import Robot, Motion
 
 # --- Paths for data exchange ---
+robot_name = os.environ.get("WEBOTS_ROBOT_NAME")
+if not robot_name:
+    raise ValueError("WEBOTS_ROBOT_NAME environment variable not set")
+
 CONTROLLER_DIR = Path(__file__).parent
 ROBOT_DIR = CONTROLLER_DIR.parent.parent
-DATA_DIR = ROBOT_DIR / "data"
+DATA_DIR = ROBOT_DIR / "data" / robot_name
 COMMANDS_FILE = DATA_DIR / "commands.json"
 STATUS_FILE = DATA_DIR / "status.json"
 
 # Create the data directory
-DATA_DIR.mkdir(exist_ok=True)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Clear the commands file on controller startup
 if COMMANDS_FILE.exists():
