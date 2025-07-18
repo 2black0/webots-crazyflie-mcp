@@ -1,9 +1,9 @@
 {
-  "timestamp": 1752829966.780826,
+  "timestamp": 1752835379.4112399,
   "webots_connected": true,
   "head_position": {
-    "yaw": 0.0,
-    "pitch": 0.0
+    "yaw": 0.5,
+    "pitch": -0.2
   },
   "arm_positions": {
     "left_shoulder_pitch": 1.49797,
@@ -18,7 +18,7 @@
     "right_wrist_yaw": 0.0
   },
   "walking_active": false,
-  "last_image_timestamp": 1752826779.1450899,
+  "last_image_timestamp": 1752833938.922698,
   "motor_limits": {
     "HeadYaw": {
       "min": -2.0857,
