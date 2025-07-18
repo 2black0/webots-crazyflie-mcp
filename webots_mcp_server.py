@@ -235,11 +235,13 @@ def list_motions() -> List[Dict[str, Any]]:
                     last_line = lines[-1]
                     time_str = last_line.split(',')[0]
                     time_parts = time_str.split(':')
-                    duration_ms = (int(time_parts[0]) * 3600000 +
-                                   int(time_parts[1]) * 60000 +
-                                   int(time_parts[2]) * 1000 +
-                                   int(time_parts[3]))
-                    duration_seconds = round(duration_ms / 1000.0, 2)
+                    # Формат ММ:СС:мс (где мс - тысячные секунды)
+                    minutes = int(time_parts[0])
+                    seconds = int(time_parts[1])
+                    milliseconds = int(time_parts[2])
+                    
+                    total_seconds = (minutes * 60) + seconds + (milliseconds / 1000.0)
+                    duration_seconds = round(total_seconds, 2)
         except (IOError, ValueError, IndexError) as e:
             print(f"Не удалось прочитать длительность для {motion_file.name}: {e}")
             duration_seconds = 0.0 # Indicate error or unknown duration
@@ -273,11 +275,13 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
                 last_line = lines[-1]
                 time_str = last_line.split(',')[0]
                 time_parts = time_str.split(':')
-                duration_ms = (int(time_parts[0]) * 3600000 +
-                               int(time_parts[1]) * 60000 +
-                               int(time_parts[2]) * 1000 +
-                               int(time_parts[3]))
-                duration_seconds = round(duration_ms / 1000.0, 2)
+                # Формат ММ:СС:мс (где мс - тысячные секунды)
+                minutes = int(time_parts[0])
+                seconds = int(time_parts[1])
+                milliseconds = int(time_parts[2])
+
+                total_seconds = (minutes * 60) + seconds + (milliseconds / 1000.0)
+                duration_seconds = round(total_seconds, 2)
     except (IOError, ValueError, IndexError) as e:
         print(f"Не удалось прочитать длительность для {motion_file.name}: {e}")
         return {"status": f"⚠️ Не удалось определить длительность для '{motion_name}'.", "duration_seconds": 0}
