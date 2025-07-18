@@ -1,17 +1,17 @@
-# Обзор проекта управления роботом NAO в Webots
+# Project Overview: NAO Robot Control in Webots
 
-Я внимательно изучил структуру вашего проекта и файл `my_controller_plus_mcp.py`.
+I have carefully studied the structure of your project and the `my_controller_plus_mcp.py` file.
 
-Вот ключевые моменты, которые я выделил:
+Here are the key points I have highlighted:
 
-*   **Назначение:** Этот скрипт является контроллером для робота NAO в симуляторе Webots.
-*   **Архитектура:** Он работает как "мост" между симуляцией Webots и внешним управляющим сервером (MCP).
-*   **Коммуникация:** Обмен данными с MCP сервером происходит через два файла в папке `data/`:
-    *   `commands.json`: Контроллер читает команды из этого файла (например, повернуть голову, проиграть анимацию).
-    *   `status.json`: Контроллер записывает в этот файл свой текущий статус (положение моторов, активные действия).
-*   **Управление роботом:**
-    *   **Движения:** Скрипт может управлять отдельными моторами (головы, рук) напрямую.
-    *   **Анимации:** Он загружает и воспроизводит готовые файлы анимаций (`.motion`) из папки `motions/`. Важно, что во время проигрывания анимации другие команды блокируются.
-*   **Основной цикл:** В бесконечном цикле симуляции Webots скрипт постоянно проверяет наличие новых команд и обновляет файл статуса.
+*   **Purpose:** This script is a controller for the NAO robot in the Webots simulator.
+*   **Architecture:** It acts as a "bridge" between the Webots simulation and an external control server (MCP).
+*   **Communication:** Data exchange with the MCP server occurs through two files in the `data/` folder:
+    *   `commands.json`: The controller reads commands from this file (e.g., turn head, play animation).
+    *   `status.json`: The controller writes its current status to this file (motor positions, active actions).
+*   **Robot Control:**
+    *   **Movements:** The script can control individual motors (head, hands) directly.
+    *   **Animations:** It loads and plays pre-made animation files (`.motion`) from the `motions/` folder. It is important that other commands are blocked while an animation is playing.
+*   **Main Loop:** In an infinite loop of the Webots simulation, the script constantly checks for new commands and updates the status file.
 
-В целом, это хорошо структурированный контроллер, который отделяет логику управления роботом от логики управляющего сервера.
+Overall, this is a well-structured controller that separates the robot control logic from the control server logic.

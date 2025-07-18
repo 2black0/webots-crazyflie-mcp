@@ -62,7 +62,7 @@ def run_test():
             print(json.dumps(status, indent=2, ensure_ascii=False))
             print("-----------------------------")
 
-            # Проверяем наличие координат
+            # Check for coordinates
             if 'robot_position' in status and all(k in status['robot_position'] for k in ['x', 'y', 'z']):
                 pos = status['robot_position']
                 print(f"[SUCCESS] Robot coordinates found: x={pos['x']:.3f}, y={pos['y']:.3f}, z={pos['z']:.3f}")

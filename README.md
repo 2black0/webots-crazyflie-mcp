@@ -1,53 +1,53 @@
-# MCP-сервер для управления роботом NAO в Webots
+# MCP Server for NAO Robot Control in Webots
 
-Этот проект интегрирует робота NAO, симулированного в среде Webots, с **Model Context Protocol (MCP)**. Это позволяет управлять роботом и получать от него данные с помощью больших языковых моделей (LLM), таких как Claude, через клиенты, поддерживающие MCP (например, Claude Desktop).
+This project integrates a NAO robot simulated in the Webots environment with the **Model Context Protocol (MCP)**. This allows controlling the robot and receiving data from it using large language models (LLMs), such as Claude, through MCP-supported clients (e.g., Claude Desktop).
 
-## 🚀 Особенности
+## 🚀 Features
 
-- **Прямое управление**: Отправка команд роботу (движение головы, рук, ходьба) напрямую из LLM.
-- **Получение данных в реальном времени**: Доступ к состоянию робота, включая положение моторов и данные с камеры.
-- **Распознавание объектов**: Используется встроенная в Webots система распознавания для идентификации объектов в поле зрения камеры.
-- **Эффективная архитектура**: MCP-сервер работает в отдельном потоке внутри контроллера Webots, обеспечивая прямое и быстрое взаимодействие без задержек на файловые операции.
-- **Простота использования**: Запуск происходит автоматически вместе со стартом симуляции в Webots.
+- **Direct Control**: Send commands to the robot (head movement, arm movement, walking) directly from an LLM.
+- **Real-time Data Retrieval**: Access the robot's status, including motor positions and camera data.
+- **Object Recognition**: Uses Webots' built-in recognition system to identify objects in the camera's field of view.
+- **Efficient Architecture**: The MCP server runs in a separate thread within the Webots controller, ensuring direct and fast interaction without file operation delays.
+- **Ease of Use**: Starts automatically with the simulation in Webots.
 
-## 🏗️ Архитектура
+## 🏗️ Architecture
 
-Проект состоит из двух основных компонентов:
+The project consists of two main components:
 
 1.  `controllers/my_controller/my_controller.py`:
-    - Основной скрипт контроллера, который запускается средой Webots.
-    - Отвечает за всю низкоуровневую логику управления роботом: инициализацию моторов, камеры, анимаций.
-    - Создает очередь команд (`queue.Queue`) и словарь состояния (`dict`) для обмена данными с MCP-сервером.
-    - Запускает MCP-сервер в отдельном потоке.
-    - В основном цикле симуляции обрабатывает команды из очереди и обновляет словарь состояния.
+    - The main controller script launched by the Webots environment.
+    - Responsible for all low-level robot control logic: initializing motors, camera, and animations.
+    - Creates a command queue (`queue.Queue`) and a status dictionary (`dict`) for data exchange with the MCP server.
+    - Starts the MCP server in a separate thread.
+    - In the main simulation loop, it processes commands from the queue and updates the status dictionary.
 
 2.  `mcp_robot_server.py`:
-    - Содержит класс `RobotMCPServer`, который инкапсулирует всю логику MCP-сервера (`FastMCP`).
-    - Принимает в конструкторе очередь команд и словарь состояния.
-    - Определяет **инструменты (`@mcp.tool`)** для выполнения действий (например, `set_head_position`) и **ресурсы (`@mcp.resource`)** для получения данных (например, `robot://status`).
-    - При вызове инструмента команда помещается в очередь, и сервер ожидает сигнала о ее выполнении от контроллера.
+    - Contains the `RobotMCPServer` class, which encapsulates all the MCP server logic (`FastMCP`).
+    - Takes the command queue and status dictionary in its constructor.
+    - Defines **tools (`@mcp.tool`)** for performing actions (e.g., `set_head_position`) and **resources (`@mcp.resource`)** for retrieving data (e.g., `robot://status`).
+    - When a tool is called, a command is placed in the queue, and the server waits for a signal from the controller that the command has been executed.
 
-Коммуникация между контроллером и сервером происходит напрямую в памяти, что обеспечивает высокую производительность и отзывчивость.
+Communication between the controller and the server occurs directly in memory, ensuring high performance and responsiveness.
 
-## ⚙️ Как запустить
+## ⚙️ How to Run
 
-1.  **Откройте проект в Webots**: Запустите Webots и откройте файл мира `worlds/test.wbt` из этого проекта.
-2.  **Запустите симуляцию**: Нажмите кнопку "Play" (▶) на панели симуляции.
-3.  **Автоматический запуск**: Webots автоматически запустит контроллер `my_controller.py` для робота NAO.
-4.  **Сервер готов**: Контроллер, в свою очередь, запустит MCP-сервер. В консоли Webots вы увидите сообщения об успешной инициализации робота и запуске сервера.
-5.  **Подключитесь клиентом**: Теперь вы можете подключиться к запущенному MCP-серверу из любого MCP-клиента (например, Claude Desktop), чтобы начать управлять роботом.
+1.  **Open the project in Webots**: Launch Webots and open the `worlds/test.wbt` world file from this project.
+2.  **Start the simulation**: Click the "Play" button (▶) on the simulation panel.
+3.  **Automatic Launch**: Webots will automatically start the `my_controller.py` controller for the NAO robot.
+4.  **Server Ready**: The controller, in turn, will start the MCP server. You will see messages in the Webots console about the successful initialization of the robot and the server launch.
+5.  **Connect a client**: You can now connect to the running MCP server from any MCP client (e.g., Claude Desktop) to start controlling the robot.
 
-## 🛠️ Доступные инструменты и ресурсы
+## 🛠️ Available Tools and Resources
 
-Сервер предоставляет следующий набор инструментов для управления роботом:
+The server provides the following set of tools for controlling the robot:
 
-- `get_robot_status()`: Получить полный статус робота.
-- `set_head_position(yaw, pitch)`: Установить положение головы.
-- `set_arm_position(arm, shoulder_pitch, shoulder_roll)`: Установить положение руки.
-- `start_head_scan()` / `stop_head_scan()`: Управление сканированием головой.
-- `get_recognized_objects()`: Получить список распознанных объектов.
-- `reset_robot_pose()`: Сбросить позу робота.
-- `toggle_walking()`: Включить/выключить ходьбу.
-- `get_robot_capabilities()`: Получить информацию о возможностях робота.
+- `get_robot_status()`: Get the full status of the robot.
+- `set_head_position(yaw, pitch)`: Set the head position.
+- `set_arm_position(arm, shoulder_pitch, shoulder_roll)`: Set the arm position.
+- `start_head_scan()` / `stop_head_scan()`: Control head scanning.
+- `get_recognized_objects()`: Get the list of recognized objects.
+- `reset_robot_pose()`: Reset the robot's pose.
+- `toggle_walking()`: Toggle walking on/off.
+- `get_robot_capabilities()`: Get information about the robot's capabilities.
 
-И соответствующие ресурсы для получения данных (например, `robot://status`).
+And corresponding resources for data retrieval (e.g., `robot://status`).

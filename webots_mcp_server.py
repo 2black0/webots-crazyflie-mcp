@@ -1,8 +1,8 @@
 '''
-MCP Server для управления роботом NAO в Webots.
+MCP Server for controlling the NAO robot in Webots.
 
-Этот сервер работает в связке с контроллером Webots через файловую систему
-и сокеты для обмена командами и статусом.
+This server works in conjunction with the Webots controller via the file system
+and sockets to exchange commands and status.
 '''
 
 import asyncio
@@ -18,7 +18,7 @@ import logging
 
 from mcp.server.fastmcp import FastMCP
 
-# Настройка логирования
+# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -28,18 +28,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Создаем MCP сервер
+# Create MCP server
 mcp = FastMCP("Webots Robot Control Server")
 
-# Пути для обмена данными с контроллером
+# Paths for data exchange with the controller
 DATA_DIR = Path(__file__).parent / "data"
 COMMANDS_FILE = DATA_DIR / "commands.json"
 STATUS_FILE = DATA_DIR / "status.json"
 
-# Создаем директорию для данных
+# Create the data directory
 DATA_DIR.mkdir(exist_ok=True)
 
-# Глобальные переменные для состояния
+# Global variables for state
 robot_status = {
     "running": False,
     "webots_connected": False,
@@ -56,89 +56,89 @@ robot_status = {
 }
 
 def load_status():
-    """Загружает статус из файла."""
+    """Loads the status from the file."""
     global robot_status
     try:
         if STATUS_FILE.exists():
             with open(STATUS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 robot_status.update(data)
-                logger.debug("Статус успешно загружен.")
+                logger.debug("Status loaded successfully.")
                 return True
     except Exception as e:
-        logger.error(f"Ошибка загрузки статуса: {e}")
+        logger.error(f"Error loading status: {e}")
     return False
 
 def save_command(command: dict):
-    """Сохраняет команду в файл для контроллера."""
+    """Saves a command to a file for the controller."""
     try:
         command['timestamp'] = time.time()
-        # Убедимся, что директория существует
+        # Make sure the directory exists
         COMMANDS_FILE.parent.mkdir(parents=True, exist_ok=True)
         with open(COMMANDS_FILE, 'w', encoding='utf-8') as f:
             json.dump(command, f, indent=2, ensure_ascii=False)
-        logger.info(f"Команда '{command.get('action')}' успешно сохранена в {COMMANDS_FILE.resolve()}")
+        logger.info(f"Command '{command.get('action')}' saved successfully to {COMMANDS_FILE.resolve()}")
         return True
     except Exception as e:
-        logger.error(f"Ошибка сохранения команды в {COMMANDS_FILE.resolve()}: {e}")
+        logger.error(f"Error saving command to {COMMANDS_FILE.resolve()}: {e}")
         return False
 
 
 
 def wait_for_image_update(timeout=10.0):
-    """Ожидает обновления изображения от контроллера."""
+    """Waits for an image update from the controller."""
     start_time = time.time()
     initial_image_time = robot_status.get('last_image_timestamp', 0)
-    logger.info(f"Ожидание обновления изображения. Начальное время: {initial_image_time}")
+    logger.info(f"Waiting for image update. Initial time: {initial_image_time}")
 
     while time.time() - start_time < timeout:
         load_status()
         if robot_status.get('last_image_timestamp', 0) > initial_image_time:
-            logger.info("Обновление изображения обнаружено.")
+            logger.info("Image update detected.")
             return True
         time.sleep(0.1)
-    logger.warning("Тайм-аут ожидания обновления изображения.")
+    logger.warning("Timeout waiting for image update.")
     return False
 
 
 @mcp.tool()
 def get_visual_perception() -> str:
     """
-    Получает визуальную информацию с камеры робота в jpg.
+    Gets visual information from the robot's camera in jpg format.
 
     """
-    logger.info("Запрошено получение визуальной информации.")
+    logger.info("Visual information requested.")
     command = {
         "action": "get_camera_image"
     }
 
     if not save_command(command):
-        logger.error("Ошибка отправки команды на получение изображения.")
-        return "❌ Ошибка отправки команды на получение изображения"
+        logger.error("Error sending command to get image.")
+        return "❌ Error sending command to get image"
 
     if not wait_for_image_update():
-        logger.warning("Команда на получение изображения отправлена, но новое изображение не получено в таймаут.")
-        return "⚠️ Команда отправлена, но новое изображение не получено"
+        logger.warning("Command to get image sent, but new image not received within timeout.")
+        return "⚠️ Command sent, but new image not received"
 
     image_path = DATA_DIR / "camera_image.jpg"
     if not image_path.exists():
-        logger.error(f"Файл изображения не найден по пути: {image_path.resolve()}")
-        return "❌ Файл изображения не найден после обновления"
+        logger.error(f"Image file not found at path: {image_path.resolve()}")
+        return "❌ Image file not found after update"
 
-    logger.info(f"Изображение успешно получено: {image_path.resolve()}")
-    return f"✅ Получено изображение для анализа: {image_path.resolve()}"
+    logger.info(f"Image successfully received: {image_path.resolve()}")
+    return f"✅ Image received for analysis: {image_path.resolve()}"
 
 @mcp.tool()
 def get_robot_status() -> str:
-    """Получает текущий статус робота."""
-    logger.info("Запрошен статус робота.")
+    """Gets the current status of the robot."""
+    logger.info("Robot status requested.")
     load_status()
 
-    # Проверяем, недавно ли обновлялся статус (последние 10 секунд)
+    # Check if the status was updated recently (last 10 seconds)
     current_time = time.time()
     last_update = robot_status.get('last_update', 0)
     robot_status['running'] = (current_time - last_update) < 10.0
-    logger.debug(f"Проверка активности: running={robot_status['running']} (last_update: {last_update})")
+    logger.debug(f"Activity check: running={robot_status['running']} (last_update: {last_update})")
 
 
     status_info = {
@@ -150,20 +150,20 @@ def get_robot_status() -> str:
         "last_update": robot_status.get('last_update', 0),
         "last_image_timestamp": robot_status.get('last_image_timestamp', 0)
     }
-    logger.info("Статус робота успешно сформирован.")
+    logger.info("Robot status successfully generated.")
     return json.dumps(status_info, indent=2, ensure_ascii=False)
 
 @mcp.tool()
 def set_head_position(yaw: float, pitch: float) -> str:
     """
-    Устанавливает положение головы робота.
+    Sets the position of the robot's head.
 
     Args:
-        yaw: Поворот головы влево-вправо (-1.0 до 1.0)
-        pitch: Наклон головы вверх-вниз (-1.0 до 1.0)
+        yaw: Head rotation left-right (-1.0 to 1.0)
+        pitch: Head tilt up-down (-1.0 to 1.0)
     """
-    logger.info(f"Установка позиции головы: yaw={yaw}, pitch={pitch}")
-    # Ограничиваем значения
+    logger.info(f"Setting head position: yaw={yaw}, pitch={pitch}")
+    # Limit the values
     yaw = max(-1.0, min(1.0, yaw))
     pitch = max(-1.0, min(1.0, pitch))
 
@@ -174,31 +174,31 @@ def set_head_position(yaw: float, pitch: float) -> str:
     }
 
     if save_command(command):
-        # Обновляем локальное состояние
+        # Update local state
         robot_status["head_position"]["yaw"] = yaw
         robot_status["head_position"]["pitch"] = pitch
-        logger.info(f"Локальный статус головы обновлен: yaw={yaw:.2f}, pitch={pitch:.2f}")
-        return f"✅ Позиция головы установлена: yaw={yaw:.2f}, pitch={pitch:.2f}"
+        logger.info(f"Local head status updated: yaw={yaw:.2f}, pitch={pitch:.2f}")
+        return f"✅ Head position set: yaw={yaw:.2f}, pitch={pitch:.2f}"
     else:
-        logger.error("Ошибка отправки команды на установку позиции головы.")
-        return "❌ Ошибка отправки команды"
+        logger.error("Error sending command to set head position.")
+        return "❌ Error sending command"
 
 @mcp.tool()
 def set_arm_position(arm: str, shoulder_pitch: float, shoulder_roll: float) -> str:
     """
-    Устанавливает положение руки робота.
+    Sets the position of the robot's arm.
 
     Args:
-        arm: 'left' или 'right'
-        shoulder_pitch: Поднятие/опускание руки (0.0 до 2.0)
-        shoulder_roll: Прижатие/отведение руки (-1.0 до 1.0)
+        arm: 'left' or 'right'
+        shoulder_pitch: Arm up/down movement (0.0 to 2.0)
+        shoulder_roll: Arm adduction/abduction (-1.0 to 1.0)
     """
-    logger.info(f"Установка позиции руки '{arm}': pitch={shoulder_pitch}, roll={shoulder_roll}")
+    logger.info(f"Setting arm position '{arm}': pitch={shoulder_pitch}, roll={shoulder_roll}")
     if arm not in ["left", "right"]:
-        logger.warning(f"Неверное значение для 'arm': {arm}. Должно быть 'left' или 'right'.")
-        return "❌ Неверное значение arm. Используйте 'left' или 'right'"
+        logger.warning(f"Invalid value for 'arm': {arm}. Must be 'left' or 'right'.")
+        return "❌ Invalid arm value. Use 'left' or 'right'"
 
-    # Ограничиваем значения
+    # Limit the values
     shoulder_pitch = max(0.0, min(2.0, shoulder_pitch))
     shoulder_roll = max(-1.0, min(1.0, shoulder_roll))
 
@@ -210,56 +210,56 @@ def set_arm_position(arm: str, shoulder_pitch: float, shoulder_roll: float) -> s
     }
 
     if save_command(command):
-        # Обновляем локальное состояние
+        # Update local state
         robot_status["arm_positions"][f"{arm}_shoulder_pitch"] = shoulder_pitch
         robot_status["arm_positions"][f"{arm}_shoulder_roll"] = shoulder_roll
-        logger.info(f"Локальный статус руки '{arm}' обновлен: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}")
-        return f"✅ Позиция {arm} руки установлена: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
+        logger.info(f"Local arm status '{arm}' updated: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}")
+        return f"✅ {arm} arm position set: pitch={shoulder_pitch:.2f}, roll={shoulder_roll:.2f}"
     else:
-        logger.error(f"Ошибка отправки команды на установку позиции руки '{arm}'.")
-        return "❌ Ошибка отправки команды"
+        logger.error(f"Error sending command to set '{arm}' arm position.")
+        return "❌ Error sending command"
 
 @mcp.tool()
 def reset_robot_pose() -> str:
-    """Сбрасывает робота в исходную позицию."""
-    logger.info("Запрошен сброс позы робота.")
+    """Resets the robot to its initial position."""
+    logger.info("Robot pose reset requested.")
     command = {
         "action": "reset_pose"
     }
 
     if save_command(command):
-        # Обновляем локальное состояние
+        # Update local state
         robot_status["head_position"]["yaw"] = 0.0
         robot_status["head_position"]["pitch"] = 0.0
         robot_status["arm_positions"]["left_shoulder_pitch"] = 1.5
         robot_status["arm_positions"]["right_shoulder_pitch"] = 1.5
         robot_status["arm_positions"]["left_shoulder_roll"] = 0.0
         robot_status["arm_positions"]["right_shoulder_roll"] = 0.0
-        logger.info("Локальный статус сброшен в исходную позицию.")
-        return "✅ Робот сброшен в исходную позицию: голова прямо, руки опущены"
+        logger.info("Local status reset to initial position.")
+        return "✅ Robot reset to initial position: head straight, arms down"
     else:
-        logger.error("Ошибка отправки команды на сброс позы.")
-        return "❌ Ошибка отправки команды сброса"
+        logger.error("Error sending pose reset command.")
+        return "❌ Error sending reset command"
 
 @mcp.tool()
 def list_motions() -> List[Dict[str, Any]]:
     """
-    Возвращает список доступных движений с их продолжительностью.
+    Returns a list of available motions with their durations.
     """
-    logger.info("Запрошен список доступных движений.")
+    logger.info("List of available motions requested.")
     motions_dir = Path(__file__).parent / "motions"
     if not motions_dir.is_dir():
-        logger.error(f"Директория motions не найдена по пути: {motions_dir.resolve()}")
-        return [{"error": "Директория motions не найдена"}]
+        logger.error(f"Motions directory not found at path: {motions_dir.resolve()}")
+        return [{"error": "Motions directory not found"}]
 
     motion_details = []
     motion_files = list(motions_dir.glob("*.motion"))
 
     if not motion_files:
-        logger.warning(f"Файлы .motion не найдены в директории: {motions_dir.resolve()}")
-        return [{"info": "Файлы .motion не найдены в директории motions"}]
+        logger.warning(f".motion files not found in directory: {motions_dir.resolve()}")
+        return [{"info": ".motion files not found in the motions directory"}]
 
-    logger.info(f"Найдено {len(motion_files)} файлов анимаций.")
+    logger.info(f"Found {len(motion_files)} animation files.")
     for motion_file in motion_files:
         duration_seconds = 0.0
         try:
@@ -269,7 +269,7 @@ def list_motions() -> List[Dict[str, Any]]:
                     last_line = lines[-1]
                     time_str = last_line.split(',')[0]
                     time_parts = time_str.split(':')
-                    # Формат ММ:СС:мс (где мс - тысячные секунды)
+                    # Format MM:SS:ms (where ms is milliseconds)
                     minutes = int(time_parts[0])
                     seconds = int(time_parts[1])
                     milliseconds = int(time_parts[2])
@@ -277,31 +277,31 @@ def list_motions() -> List[Dict[str, Any]]:
                     total_seconds = (minutes * 60) + seconds + (milliseconds / 1000.0)
                     duration_seconds = round(total_seconds, 2)
         except (IOError, ValueError, IndexError) as e:
-            logger.warning(f"Не удалось прочитать длительность для {motion_file.name}: {e}")
+            logger.warning(f"Failed to read duration for {motion_file.name}: {e}")
             duration_seconds = 0.0 # Indicate error or unknown duration
 
         motion_details.append({
             "name": motion_file.stem,
             "duration_seconds": duration_seconds
         })
-    logger.info("Список движений успешно сформирован.")
+    logger.info("Motion list successfully generated.")
     return motion_details
 
 @mcp.tool()
 def play_motion(motion_name: str) -> Dict[str, Any]:
     """
-    Запускает движение робота и возвращает его продолжительность.
+    Starts a robot motion and returns its duration.
     """
-    logger.info(f"Запрошено воспроизведение анимации: {motion_name}")
+    logger.info(f"Animation playback requested: {motion_name}")
     motions_dir = Path(__file__).parent / "motions"
     
-    # Очищаем имя от расширения, если оно есть
+    # Clear the name from the extension if it exists
     base_motion_name = motion_name.split('.')[0]
     motion_file = motions_dir / f"{base_motion_name}.motion"
 
     if not motion_file.exists():
-        logger.error(f"Файл анимации '{motion_name}' не найден по пути: {motion_file.resolve()}")
-        return {"status": f"❌ Файл анимации '{motion_name}' не найден.", "duration_seconds": 0}
+        logger.error(f"Animation file '{motion_name}' not found at path: {motion_file.resolve()}")
+        return {"status": f"❌ Animation file '{motion_name}' not found.", "duration_seconds": 0}
 
     duration_seconds = 0.0
     try:
@@ -311,17 +311,17 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
                 last_line = lines[-1]
                 time_str = last_line.split(',')[0]
                 time_parts = time_str.split(':')
-                # Формат ММ:СС:мс (где мс - тысячные секунды)
+                # Format MM:SS:ms (where ms is milliseconds)
                 minutes = int(time_parts[0])
                 seconds = int(time_parts[1])
                 milliseconds = int(time_parts[2])
 
                 total_seconds = (minutes * 60) + seconds + (milliseconds / 1000.0)
                 duration_seconds = round(total_seconds, 2)
-                logger.info(f"Определена длительность анимации '{motion_name}': {duration_seconds}s")
+                logger.info(f"Animation duration for '{motion_name}' determined: {duration_seconds}s")
     except (IOError, ValueError, IndexError) as e:
-        logger.warning(f"Не удалось прочитать длительность для {motion_file.name}: {e}")
-        return {"status": f"⚠️ Не удалось определить длительность для '{motion_name}'.", "duration_seconds": 0}
+        logger.warning(f"Failed to read duration for {motion_file.name}: {e}")
+        return {"status": f"⚠️ Failed to determine duration for '{motion_name}'.", "duration_seconds": 0}
 
     command = {
         "action": "play_motion",
@@ -330,13 +330,13 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
 
     if save_command(command):
         return {
-            "status": f"✅ Команда на воспроизведение анимации '{motion_name}' отправлена.",
+            "status": f"✅ Command to play animation '{motion_name}' sent.",
             "duration_seconds": duration_seconds
         }
     else:
-        logger.error(f"Ошибка отправки команды на воспроизведение анимации '{motion_name}'.")
+        logger.error(f"Error sending command to play animation '{motion_name}'.")
         return {
-            "status": f"❌ Ошибка отправки команды на воспроизведение анимации '{motion_name}'.",
+            "status": f"❌ Error sending command to play animation '{motion_name}'.",
             "duration_seconds": 0
         }
 
@@ -344,13 +344,13 @@ def play_motion(motion_name: str) -> Dict[str, Any]:
 @mcp.tool()
 def set_led_color(color: str, part: str = 'all') -> str:
     """
-    Устанавливает цвет светодиодов робота.
+    Sets the color of the robot's LEDs.
 
     Args:
-        color: Название цвета ('red', 'green', 'blue', 'white', 'off') или HEX-код (например, '#FF0000').
-        part: Часть тела для включения (пока поддерживается только 'all').
+        color: Color name ('red', 'green', 'blue', 'white', 'off') or HEX code (e.g., '#FF0000').
+        part: Body part to light up (currently only 'all' is supported).
     """
-    logger.info(f"Установка цвета светодиодов: color='{color}', part='{part}'")
+    logger.info(f"Setting LED color: color='{color}', part='{part}'")
     color_map = {
         "red": 0xFF0000,
         "green": 0x00FF00,
@@ -365,11 +365,11 @@ def set_led_color(color: str, part: str = 'all') -> str:
         try:
             rgb_color = int(color[1:], 16)
         except ValueError:
-            logger.warning(f"Неверный HEX-код цвета: {color}")
-            return f"❌ Неверный HEX-код цвета: {color}"
+            logger.warning(f"Invalid HEX color code: {color}")
+            return f"❌ Invalid HEX color code: {color}"
     else:
-        logger.warning(f"Неверный цвет: {color}. Используйте название или HEX-код.")
-        return f"❌ Неверный цвет: {color}. Используйте название или HEX-код."
+        logger.warning(f"Invalid color: {color}. Use a name or HEX code.")
+        return f"❌ Invalid color: {color}. Use a name or HEX code."
 
     command = {
         "action": "set_leds",
@@ -377,37 +377,37 @@ def set_led_color(color: str, part: str = 'all') -> str:
     }
 
     if save_command(command):
-        return f"✅ Команда на установку цвета '{color}' отправлена."
+        return f"✅ Command to set color '{color}' sent."
     else:
-        logger.error("Ошибка отправки команды на установку цвета.")
-        return f"❌ Ошибка отправки команды на установку цвета."
+        logger.error("Error sending command to set color.")
+        return f"❌ Error sending command to set color."
 
 
 @mcp.tool()
 def get_robot_capabilities() -> str:
-    """Получает список доступных возможностей робота."""
-    logger.info("Запрошен список возможностей робота.")
+    """Gets a list of the robot's available capabilities."""
+    logger.info("List of robot capabilities requested.")
     capabilities = {
         "movement": {
-            "head_yaw": {"min": -1.0, "max": 1.0, "description": "Поворот головы влево-вправо"},
-            "head_pitch": {"min": -1.0, "max": 1.0, "description": "Наклон головы вверх-вниз"},
-            "shoulder_pitch": {"min": 0.0, "max": 2.0, "description": "Поднятие/опускание руки"},
-            "shoulder_roll": {"min": -1.0, "max": 1.0, "description": "Прижатие/отведение руки"}
+            "head_yaw": {"min": -1.0, "max": 1.0, "description": "Head rotation left-right"},
+            "head_pitch": {"min": -1.0, "max": 1.0, "description": "Head tilt up-down"},
+            "shoulder_pitch": {"min": 0.0, "max": 2.0, "description": "Arm up/down movement"},
+            "shoulder_roll": {"min": -1.0, "max": 1.0, "description": "Arm adduction/abduction"}
         },
         "sensors": {
-            "camera": {"description": "Камера  Webots"}
+            "camera": {"description": "Webots camera"}
         },
         "actions": {
-            "pose_reset": {"description": "Сброс в исходную позицию"}
+            "pose_reset": {"description": "Reset to initial position"}
         }
     }
-    logger.info("Список возможностей робота успешно сформирован.")
+    logger.info("List of robot capabilities successfully generated.")
     return json.dumps(capabilities, indent=2, ensure_ascii=False)
 
 @mcp.tool()
 def check_webots_connection() -> str:
-    """Проверяет соединение с контроллером Webots."""
-    logger.info("Запрошена проверка соединения с Webots.")
+    """Checks the connection with the Webots controller."""
+    logger.info("Webots connection check requested.")
     load_status()
 
     current_time = time.time()
@@ -422,14 +422,14 @@ def check_webots_connection() -> str:
         "status_file_exists": STATUS_FILE.exists(),
         "webots_reported_status": robot_status.get('webots_connected', False)
     }
-    logger.info(f"Статус соединения: {connection_info}")
+    logger.info(f"Connection status: {connection_info}")
     return json.dumps(connection_info, indent=2, ensure_ascii=False)
 
-# Инициализация при загрузке
-logger.info("Инициализация MCP сервера...")
+# Initialization on load
+logger.info("Initializing MCP server...")
 load_status()
 
 if __name__ == "__main__":
-    logger.info("Запуск MCP сервера.")
-    # Запуск сервера
+    logger.info("Starting MCP server.")
+    # Start the server
     mcp.run()
