@@ -147,6 +147,21 @@ except Exception as e:
     leds_found = False
     print(f"❌ Ошибка инициализации светодиодов: {e}")
 
+# --- Инициализация GPS ---
+gps = None
+gps_found = True
+try:
+    gps = robot.getDevice("gps")
+    if gps:
+        gps.enable(timestep)
+        print("✅ GPS найден и включен")
+    else:
+        gps_found = False
+        print("❌ GPS сенсор не найден")
+except Exception as e:
+    gps_found = False
+    print(f"❌ Ошибка инициализации GPS: {e}")
+
 
 # --- Функции валидации ---
 def validate_motor_position(motor_name, position):
@@ -500,12 +515,21 @@ def update_status():
     status_data = {
         "timestamp": current_time,
         "webots_connected": True,
+        "robot_position": {"x": 0, "y": 0, "z": 0}, # Placeholder
         "head_position": head_position,
         "arm_positions": arm_positions,
         "walking_active": robot_state['walking_active'],
         "last_image_timestamp": robot_state.get('last_image_timestamp', 0),
         "motor_limits": {name: {"min": limits[0], "max": limits[1]} for name, limits in MOTOR_LIMITS.items()}
     }
+
+    # Получаем координаты робота, если GPS доступен
+    if gps_found and gps:
+        try:
+            coords = gps.getValues()
+            status_data["robot_position"] = {"x": coords[0], "y": coords[1], "z": coords[2]}
+        except Exception as e:
+            print(f"❌ Ошибка получения координат GPS: {e}")
 
     # Записываем статус в файл
     try:

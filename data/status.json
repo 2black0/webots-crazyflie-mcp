@@ -1,6 +1,11 @@
 {
-  "timestamp": 1752835379.4112399,
+  "timestamp": 1752835958.2290413,
   "webots_connected": true,
+  "robot_position": {
+    "x": -0.0032033567153692717,
+    "y": 0.3056314859715506,
+    "z": 0.3325203287708712
+  },
   "head_position": {
     "yaw": 0.5,
     "pitch": -0.2
@@ -18,7 +23,7 @@
     "right_wrist_yaw": 0.0
   },
   "walking_active": false,
-  "last_image_timestamp": 1752833938.922698,
+  "last_image_timestamp": 0,
   "motor_limits": {
     "HeadYaw": {
       "min": -2.0857,
