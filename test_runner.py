@@ -5,7 +5,7 @@ import time
 import sys
 
 # --- Configuration ---
-ROBOT_NAME = "NAO"
+ROBOT_NAME = "NAO(1)"
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 COMMANDS_FILE = os.path.join(DATA_DIR, ROBOT_NAME, 'commands.json')
 STATUS_FILE = os.path.join(DATA_DIR, ROBOT_NAME, 'status.json')
