@@ -1,53 +1,59 @@
-# MCP Server for NAO Robot Control in Webots
+# Webots MCP Controller
 
-This project integrates a NAO robot simulated in the Webots environment with the **Model Context Protocol (MCP)**. This allows controlling the robot and receiving data from it using large language models (LLMs), such as Claude, through MCP-supported clients (e.g., Claude Desktop).
+This project provides a framework for controlling a NAO robot in the Webots simulator using the Model-Context-Protocol (MCP). It allows for interaction with the robot using natural language through compatible clients.
 
-## 🚀 Features
+## Features
 
-- **Direct Control**: Send commands to the robot (head movement, arm movement, walking) directly from an LLM.
-- **Real-time Data Retrieval**: Access the robot's status, including motor positions and camera data.
-- **Object Recognition**: Uses Webots' built-in recognition system to identify objects in the camera's field of view.
-- **Efficient Architecture**: The MCP server runs in a separate thread within the Webots controller, ensuring direct and fast interaction without file operation delays.
-- **Ease of Use**: Starts automatically with the simulation in Webots.
+- **File-Based Communication**: A robust communication system between the MCP server and the Webots controller using `json` files.
+- **Motor Position Validation**: All motor commands are validated against the robot's physical limits to prevent errors.
+- **Motion Playback**: Play pre-recorded `.motion` files.
+- **Sensing**: Access to camera and GPS data.
+- **Actuator Control**: Control head, arms, and LEDs.
+- **Dynamic Robot Discovery**: The server can handle multiple robots, identifying them by their `ROBOT_NAME`.
 
-## 🏗️ Architecture
+## Architecture
 
-The project consists of two main components:
+The system is composed of two main components:
 
-1.  `controllers/my_controller/my_controller.py`:
-    - The main controller script launched by the Webots environment.
-    - Responsible for all low-level robot control logic: initializing motors, camera, and animations.
-    - Creates a command queue (`queue.Queue`) and a status dictionary (`dict`) for data exchange with the MCP server.
-    - Starts the MCP server in a separate thread.
-    - In the main simulation loop, it processes commands from the queue and updates the status dictionary.
+1.  **`webots_mcp_server.py`**: 
+    - This script runs the `FastMCP` server, exposing the robot's capabilities as tools.
+    - It communicates with the Webots controller by writing commands to a `commands.json` file and reading the robot's state from a `status.json` file.
+    - It handles multiple robots by creating separate data directories for each.
 
-2.  `mcp_robot_server.py`:
-    - Contains the `RobotMCPServer` class, which encapsulates all the MCP server logic (`FastMCP`).
-    - Takes the command queue and status dictionary in its constructor.
-    - Defines **tools (`@mcp.tool`)** for performing actions (e.g., `set_head_position`) and **resources (`@mcp.resource`)** for retrieving data (e.g., `robot://status`).
-    - When a tool is called, a command is placed in the queue, and the server waits for a signal from the controller that the command has been executed.
+2.  **`controllers/my_controller_plus_mcp/my_controller_plus_mcp.py`**:
+    - This is the main controller script for the NAO robot in Webots.
+    - It runs in the Webots simulation environment and is responsible for all low-level robot control.
+    - It continuously reads the `commands.json` file for new commands from the MCP server.
+    - It writes the robot's current status (motor positions, sensor data) to the `status.json` file.
 
-Communication between the controller and the server occurs directly in memory, ensuring high performance and responsiveness.
+## How to Run
 
-## ⚙️ How to Run
+1.  **Open the project in Webots**: Launch Webots and open the `worlds/MCP-test.wbt` world file.
+2.  **Start the simulation**: Click the "Play" button (▶).
+3.  **Connect a client**: Connect to the project using an MCP client (e.g., Gemini CLI). The client is responsible for automatically starting the `webots_mcp_server.py` script based on its configuration. For example, a `settings.json` file for the client might contain:
+    ```json
+    "I-robot-mcp": {
+      "command": "python.exe",
+      "args": [
+        "d:/webots-mcp/webots_mcp_server.py"
+      ]
+    }
+    ```
+4.  **Control the Robot**: Once the client is connected and the server is running, you can start interacting with the robot.
 
-1.  **Open the project in Webots**: Launch Webots and open the `worlds/test.wbt` world file from this project.
-2.  **Start the simulation**: Click the "Play" button (▶) on the simulation panel.
-3.  **Automatic Launch**: Webots will automatically start the `my_controller.py` controller for the NAO robot.
-4.  **Server Ready**: The controller, in turn, will start the MCP server. You will see messages in the Webots console about the successful initialization of the robot and the server launch.
-5.  **Connect a client**: You can now connect to the running MCP server from any MCP client (e.g., Claude Desktop) to start controlling the robot.
+## Available Tools
 
-## 🛠️ Available Tools and Resources
+The server provides the following tools for controlling the robot:
 
-The server provides the following set of tools for controlling the robot:
-
-- `get_robot_status()`: Get the full status of the robot.
-- `set_head_position(yaw, pitch)`: Set the head position.
-- `set_arm_position(arm, shoulder_pitch, shoulder_roll)`: Set the arm position.
-- `start_head_scan()` / `stop_head_scan()`: Control head scanning.
-- `get_recognized_objects()`: Get the list of recognized objects.
-- `reset_robot_pose()`: Reset the robot's pose.
-- `toggle_walking()`: Toggle walking on/off.
-- `get_robot_capabilities()`: Get information about the robot's capabilities.
-
-And corresponding resources for data retrieval (e.g., `robot://status`).
+- `get_visual_perception(robot_name)`: Get an image from the robot's camera.
+- `get_robot_position(robot_name)`: Get the robot's current position.
+- `get_robot_status(robot_name)`: Get the full status of the robot.
+- `set_head_position(robot_name, yaw, pitch)`: Set the head position.
+- `set_arm_position(robot_name, arm, shoulder_pitch, shoulder_roll)`: Set the arm position.
+- `reset_robot_pose(robot_name)`: Reset the robot's pose.
+- `list_motions()`: List all available motions.
+- `play_motion(robot_name, motion_name)`: Play a pre-recorded motion.
+- `set_led_color(robot_name, color, part)`: Set the color of the robot's LEDs.
+- `get_robot_capabilities(robot_name)`: Get information about the robot's capabilities.
+- `check_webots_connection(robot_name)`: Check the connection with the Webots controller.
+- `list_robots()`: List all active robots.
