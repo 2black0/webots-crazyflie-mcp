@@ -65,7 +65,7 @@ def run_test():
 
         # 3. Test: Set head position
         print("\n[TEST 2] Setting head position...")
-        head_command = {'action': 'set_head_position', 'yaw': 0.5, 'pitch': -0.2}
+        head_command = {'action': 'set_head_position', 'yaw': 0.5, 'pitch': -0.5}
         if not write_command(head_command):
             return
             
