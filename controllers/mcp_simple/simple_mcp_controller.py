@@ -18,7 +18,7 @@ import logging
 
 # Import existing flight components
 import sys
-sys.path.append(str(Path(__file__).parent.parent.parent / "old" / "project-crazyflie" / "controllers"))
+sys.path.append(str(Path(__file__).parent.parent / "old" / "project-crazyflie" / "controllers"))
 
 try:
     from core.flight_controller import CoreFlightController
@@ -35,7 +35,7 @@ class MCPCommunication:
     
     def __init__(self, robot_name: str):
         self.robot_name = robot_name
-        self.data_dir = Path(__file__).parent.parent.parent / "data" / robot_name
+        self.data_dir = Path(__file__).parent.parent / "data" / robot_name
         self.data_dir.mkdir(parents=True, exist_ok=True)
         
         self.commands_file = self.data_dir / "commands.json"

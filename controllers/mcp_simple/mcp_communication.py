@@ -17,7 +17,7 @@ class MCPCommunication:
     
     def __init__(self, robot_name: str):
         self.robot_name = robot_name
-        self.data_dir = Path(__file__).parent.parent.parent / "data" / robot_name
+        self.data_dir = Path(__file__).parent.parent / "data" / robot_name
         self.data_dir.mkdir(parents=True, exist_ok=True)
         
         self.commands_file = self.data_dir / "commands.json"

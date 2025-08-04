@@ -83,7 +83,7 @@ cat data/Crazyflie/status.json
 ## 🏗️ Project Structure
 
 ```
-crazyflie-webots-mcp/
+webots-crazyflie-mcp/
 ├── README.md                        # This file
 ├── crazyflie_mcp_standalone.py      # Main MCP server
 ├── run.sh                           # System launcher

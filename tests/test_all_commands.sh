@@ -1,10 +1,7 @@
 #!/bin/bash
 # Comprehensive MCP Command Testing Script
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."in/bash
-# Comprehensive MCP Commands Testing Script
-
-cd "$(dirname "${BASH_SOURCE[0]}")"
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 echo "🧪 Comprehensive MCP Commands Testing"
 echo "====================================="
