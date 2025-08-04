@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <created>2025-08-04T00:00:00</created>
+    <modified>2025-08-04T00:00:00</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_geometries>
+    <geometry id="Propeller-mesh" name="Propeller">
+      <mesh>
+        <source id="Propeller-mesh-positions">
+          <float_array id="Propeller-mesh-positions-array" count="24">
+            -0.02 0 0 0.02 0 0 0 -0.005 0 0 0.005 0
+            -0.005 0 -0.001 0.005 0 -0.001 0 -0.001 -0.001 0 0.001 -0.001
+          </float_array>
+          <technique_common>
+            <accessor source="#Propeller-mesh-positions-array" count="8" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Propeller-mesh-normals">
+          <float_array id="Propeller-mesh-normals-array" count="18">
+            0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1
+          </float_array>
+          <technique_common>
+            <accessor source="#Propeller-mesh-normals-array" count="6" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Propeller-mesh-vertices">
+          <input semantic="POSITION" source="#Propeller-mesh-positions"/>
+        </vertices>
+        <triangles count="4">
+          <input semantic="VERTEX" source="#Propeller-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Propeller-mesh-normals" offset="1"/>
+          <p>0 0 1 0 2 0 1 1 3 1 2 1 4 2 5 2 6 2 5 3 7 3 6 3</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Propeller" name="Propeller" type="NODE">
+        <instance_geometry url="#Propeller-mesh"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

@@ -1,0 +1,23 @@
+# Crazyflie MCP Configuration
+system:
+  drone_name: "Crazyflie"
+  data_directory: "data"
+  log_directory: "logs"
+  timestep: 32
+
+flight_parameters:
+  max_altitude: 10.0
+  min_altitude: 0.1
+  takeoff_altitude: 1.0
+  max_horizontal_velocity: 5.0
+  max_vertical_velocity: 3.0
+
+communication:
+  command_check_interval: 0.1
+  status_update_interval: 0.2
+  command_timeout: 10.0
+
+logging:
+  level: "INFO"
+  file_logging: true
+  console_logging: true
